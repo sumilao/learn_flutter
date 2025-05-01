@@ -12,24 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -38,15 +21,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -54,36 +28,64 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          const Text(
-            "Hello world",
-            textAlign: TextAlign.center,
-          ),
+          const Text("Hello world", textAlign: TextAlign.left),
           Text(
             "Hello world! I'm Jack. " * 4,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const Text(
+          const Text("Hello world", textScaler: TextScaler.linear(1.5)),
+          Text(
+            "Hello world " * 6, //字符串重复六次
+            textAlign: TextAlign.center,
+          ),
+          Text(
             "Hello world",
-            textScaleFactor: 1.5,
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 18.0,
+              height: 1.2,
+              fontFamily: "Courier",
+              background: Paint()..color = Colors.yellow,
+              decoration: TextDecoration.underline,
+              decorationStyle: TextDecorationStyle.dashed,
+            ),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(text: "Home: "),
+                TextSpan(
+                  text: "https://flutterchina.club",
+                  style: const TextStyle(color: Colors.blue),
+                ),
+                // recognizer: _tapRecognizer),
+              ],
+            ),
+          ),
+          DefaultTextStyle(
+            //1.设置文本默认样式
+            style: const TextStyle(color: Colors.red, fontSize: 20.0),
+            textAlign: TextAlign.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const <Widget>[
+                Text("hello world"),
+                Text("I am Jack"),
+                Text(
+                  "I am Jack",
+                  style: TextStyle(
+                    inherit: false, //2.不继承默认样式
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
