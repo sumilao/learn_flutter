@@ -30,48 +30,70 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:
-          <Widget>[
-                ElevatedButton(
-                  child: const Text("normal"),
-                  onPressed: () => {},
+    var img = const AssetImage("imgs/avatar.png");
+    return SingleChildScrollView(
+      child: Column(
+        children:
+            <Image>[
+              Image(image: AssetImage("imgs/avatar.png"), width: 100.0),
+              Image.asset("imgs/avatar.png", width: 100.0),
+              Image(
+                image: NetworkImage(
+                  "https://avatars.githubusercontent.com/u/14101776?v=4",
                 ),
-                OutlinedButton(
-                  child: const Text("normal"),
-                  onPressed: () => {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.thumb_up),
-                  onPressed: () => {},
-                ),
-                TextButton(child: const Text("Submit"), onPressed: () => {}),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.send),
-                  label: const Text("发送"),
-                  onPressed: _onPressed,
-                ),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.add),
-                  label: const Text("添加"),
-                  onPressed: _onPressed,
-                ),
-                TextButton.icon(
-                  icon: const Icon(Icons.info),
-                  label: const Text("详情"),
-                  onPressed: _onPressed,
-                ),
-              ]
-              .map(
-                (e) =>
-                    Padding(child: e, padding: const EdgeInsets.only(top: 20)),
-              )
-              .toList(),
+                width: 100.0,
+              ),
+              Image.network(
+                "https://avatars2.githubusercontent.com/u/20411648?s=460&v=4",
+                width: 100.0,
+              ),
+              Image(image: img, height: 50.0, width: 100.0, fit: BoxFit.fill),
+              Image(image: img, height: 50, width: 50.0, fit: BoxFit.contain),
+              Image(image: img, width: 100.0, height: 50.0, fit: BoxFit.cover),
+              Image(
+                image: img,
+                width: 100.0,
+                height: 50.0,
+                fit: BoxFit.fitWidth,
+              ),
+              Image(
+                image: img,
+                width: 100.0,
+                height: 50.0,
+                fit: BoxFit.fitHeight,
+              ),
+              Image(
+                image: img,
+                width: 100.0,
+                height: 50.0,
+                fit: BoxFit.scaleDown,
+              ),
+              Image(image: img, height: 50.0, width: 100.0, fit: BoxFit.none),
+              Image(
+                image: img,
+                width: 100.0,
+                color: Colors.blue,
+                colorBlendMode: BlendMode.difference,
+                fit: BoxFit.fill,
+              ),
+              Image(
+                image: img,
+                width: 100.0,
+                height: 200.0,
+                repeat: ImageRepeat.repeatY,
+              ),
+            ].map((e) {
+              return Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(width: 100, child: e),
+                  ),
+                  Text(e.fit.toString()),
+                ],
+              );
+            }).toList(),
+      ),
     );
   }
-
-  void _onPressed() {
-    print("button pressed");
-  }
 }
-

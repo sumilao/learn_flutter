@@ -88,6 +88,10 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
+  assets:
+    - imgs/avatar.png
+    - imgs/sea.png
+
   fonts:
     - family: Raleway
       fonts:
