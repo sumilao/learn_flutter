@@ -27,6 +27,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// 声明文本样式
+const textStyle = const TextStyle(fontFamily: 'Raleway');
+
+// 使用文本样式
+var buttonText = const Text("Use the font for this text", style: textStyle);
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
@@ -87,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          const Text("Use the font for this text", style: textStyle),
         ],
       ),
     );
