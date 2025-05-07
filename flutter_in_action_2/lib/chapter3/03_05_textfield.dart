@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
           TextField(
             autofocus: true,
             focusNode: focusNode1, //关联focusNode1
-            toolbarOptions: const ToolbarOptions(
+            toolbarOptions: const ToolbarOptionslder
               selectAll: true,
               copy: true,
               paste: true,
