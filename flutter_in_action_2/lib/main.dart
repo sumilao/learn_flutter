@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> _generateItem(BuildContext context, List<Page> children) {
+  List<Widget> _generateItem(BuildContext context, List<Page<Object?>> children) {
     return children.map<Widget>((page) {
       return ListTile(
         // title: Text(page.title),
@@ -54,7 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
             title: const Text("第一个Flutter应用"),
             children: _generateItem(context, [
               // Page("计数器", const CounterRoute(), withScaffold: false),
-              Page("路由传值", const RouterTestRoute()),
+        MaterialPage<void>(
+          key: const ValueKey<String>('路由传值'),
+          child: const RouterTestRoute(),
+        ),
+              // MaterialPage<void>("路由传值", const RouterTestRoute()),
               // Page("State生命周期", const StateLifecycleTest()),
               // Page(
               //   "子树中获取State对象",
