@@ -43,21 +43,13 @@ class Page {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-            ),
-            body: widget,
-          ),
+          builder:
+              (context) =>
+                  Scaffold(appBar: AppBar(title: Text(title)), body: widget),
         ),
       );
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => widget,
-        ),
-      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
     }
   }
 }
@@ -85,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ExpansionTile(
             title: const Text("第一个Flutter应用"),
             children: _generateItem(context, [
-              // Page("计数器", const CounterRoute(), withScaffold: false),
+              Page("计数器", const CounterRoute(), withScaffold: false),
               Page("路由传值", const RouterTestRoute()),
               // Page("State生命周期", const StateLifecycleTest()),
               // Page("子树中获取State对象", const GetStateObjectRoute(),

@@ -56,4 +56,3 @@ class TipRoute extends StatelessWidget {
     );
   }
 }
-
