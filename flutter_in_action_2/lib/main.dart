@@ -39,7 +39,8 @@ class Page {
   const Page(this.title, this.widget, {this.withScaffold = true});
 
   void openPage(BuildContext context) {
-    if (withScaffold) {
+    // if (withScaffold) {
+    if (true) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -79,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: _generateItem(context, [
               Page("计数器", const CounterRoute(), withScaffold: false),
               Page("路由传值", const RouterTestRoute()),
+              Page("Stateless", const Echo(text: "hello world", backgroundColor: Colors.blue,)),
               Page("State生命周期", const StateLifecycleTest()),
               Page(
                 "子树中获取State对象",
