@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>7.4：颜色和主题 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="74-颜色和主题"><a class="header" href="#74-颜色和主题">7.4 颜色和主题</a></h1>
+<h2 id="741-颜色"><a class="header" href="#741-颜色">7.4.1 颜色</a></h2>
+<p>在介绍主题前我们先了解一些Flutter中的 Color 类。Color 类中颜色以一个 int 值保存，我们知道显示器颜色是由红、绿、蓝三基色组成，每种颜色占8比特，存储结构如下：</p>
+<div class="table-wrapper"><table><thead><tr><th>Bit（位）</th><th>颜色</th></tr></thead><tbody>
+<tr><td>0-7</td><td>蓝色</td></tr>
+<tr><td>8-15</td><td>绿色</td></tr>
+<tr><td>16-23</td><td>红色</td></tr>
+<tr><td>24-31</td><td>Alpha (不透明度)</td></tr>
+</tbody></table>
+</div>
+<p>上面表格中的字段在 Color 类中都有对应的属性，而Color中的众多方法也就是操作这些属性的，由于大多比较简单，读者可以查看类定义了解。在此我们主要讨论一下色值如何转换为Color对象、颜色亮度以及MaterialColor。</p>
+<h3 id="1-如何将颜色字符串转成-color-对象"><a class="header" href="#1-如何将颜色字符串转成-color-对象">1. 如何将颜色字符串转成 Color 对象</a></h3>
+<p>如 Web 开发中的色值通常是一个字符串如"#dc380d"，它是一个 RGB 值，我们可以通过下面这些方法将其转为Color类：</p>
+<pre><code class="language-dart">Color(0xffdc380d); //如果颜色固定可以直接使用整数值
+//颜色是一个字符串变量
+var c = "dc380d";
+Color(int.parse(c,radix:16)|0xFF000000) //通过位运算符将Alpha设置为FF
+Color(int.parse(c,radix:16)).withAlpha(255)  //通过方法将Alpha设置为FF
+</code></pre>
+<h3 id="2-颜色亮度"><a class="header" href="#2-颜色亮度">2. 颜色亮度</a></h3>
+<p>假如，我们要实现一个背景颜色和Title可以自定义的导航栏，并且背景色为深色时我们应该让Title显示为浅色；背景色为浅色时，Title 显示为深色。要实现这个功能，我们就需要来计算背景色的亮度，然后动态来确定Title的颜色。Color 类中提供了一个<code>computeLuminance()</code>方法，它可以返回一个[0-1]的一个值，数字越大颜色就越浅，我们可以根据它来动态确定Title的颜色，下面是导航栏NavBar的简单实现：</p>
+<pre><code class="language-dart">class NavBar extends StatelessWidget {
+  final String title;
+  final Color color; //背景颜色
+
+  NavBar({
+    Key? key,
+    required this.color,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 52,
+        minWidth: double.infinity,
+      ),
+      decoration: BoxDecoration(
+        color: color,
+        boxShadow: [
+          //阴影
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 3),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          //根据背景色亮度来确定Title颜色
+          color: color.computeLuminance() &lt; 0.5 ? Colors.white : Colors.black,
+        ),
+      ),
+      alignment: Alignment.center,
+    );
+  }
+}
+</code></pre>
+<p>测试代码如下：</p>
+<pre><code class="language-dart">Column(
+  children: &lt;Widget&gt;[
+    //背景为蓝色，则title自动为白色
+    NavBar(color: Colors.blue, title: "标题"), 
+    //背景为白色，则title自动为黑色
+    NavBar(color: Colors.white, title: "标题"),
+  ]
+)
+</code></pre>
+<p>运行效果如图7-4所示：</p>
+<p><img src="../imgs/7-4.png" alt="NavBar" /></p>
+<h3 id="3-materialcolor"><a class="header" href="#3-materialcolor">3. MaterialColor</a></h3>
+<p><code>MaterialColor</code>是实现Material Design中的颜色的类，它包含一种颜色的10个级别的渐变色。<code>MaterialColor</code>通过"[]"运算符的索引值来代表颜色的深度，有效的索引有：50，100，200，…，900，数字越大，颜色越深。<code>MaterialColor</code>的默认值为索引等于500的颜色。举个例子，<code>Colors.blue</code>是预定义的一个<code>MaterialColor</code>类对象，定义如下：</p>
+<pre><code class="language-dart">static const MaterialColor blue = MaterialColor(
+  _bluePrimaryValue,
+  &lt;int, Color&gt;{
+     50: Color(0xFFE3F2FD),
+    100: Color(0xFFBBDEFB),
+    200: Color(0xFF90CAF9),
+    300: Color(0xFF64B5F6),
+    400: Color(0xFF42A5F5),
+    500: Color(_bluePrimaryValue),
+    600: Color(0xFF1E88E5),
+    700: Color(0xFF1976D2),
+    800: Color(0xFF1565C0),
+    900: Color(0xFF0D47A1),
+  },
+);
+static const int _bluePrimaryValue = 0xFF2196F3;
+</code></pre>
+<p>我们可以根据 shadeXX 来获取具体索引的颜色。<code>Colors.blue.shade50</code>到<code>Colors.blue.shade900</code>的色值从浅蓝到深蓝渐变，效果如图7-5所示：</p>
+<p><img src="../imgs/7-5.jpeg" alt="NavBar" /></p>
+<h2 id="742-主题theme"><a class="header" href="#742-主题theme">7.4.2 主题（Theme）</a></h2>
+<p><code>Theme</code>组件可以为Material APP定义主题数据（ThemeData）。Material组件库里很多组件都使用了主题数据，如导航栏颜色、标题字体、Icon样式等。<code>Theme</code>内会使用<code>InheritedWidget</code>来为其子树共享样式数据。</p>
+<h3 id="1-themedata"><a class="header" href="#1-themedata">1. ThemeData</a></h3>
+<p><code>ThemeData</code>用于保存是Material 组件库的主题数据，Material组件需要遵守相应的设计规范，而这些规范可自定义部分都定义在ThemeData中了，所以我们可以通过ThemeData来自定义应用主题。在子组件中，我们可以通过<code>Theme.of</code>方法来获取当前的<code>ThemeData</code>。</p>
+<blockquote>
+<p>注意：Material Design 设计规范中有些是不能自定义的，如导航栏高度，ThemeData只包含了可自定义部分。</p>
+</blockquote>
+<p>我们看看<code>ThemeData</code>部分数据定义：</p>
+<pre><code class="language-dart">ThemeData({
+  Brightness? brightness, //深色还是浅色
+  MaterialColor? primarySwatch, //主题颜色样本，见下面介绍
+  Color? primaryColor, //主色，决定导航栏颜色
+  Color? cardColor, //卡片颜色
+  Color? dividerColor, //分割线颜色
+  ButtonThemeData buttonTheme, //按钮主题
+  Color dialogBackgroundColor,//对话框背景颜色
+  String fontFamily, //文字字体
+  TextTheme textTheme,// 字体主题，包括标题、body等文字样式
+  IconThemeData iconTheme, // Icon的默认样式
+  TargetPlatform platform, //指定平台，应用特定平台控件风格
+  ColorScheme? colorScheme,
+  ...
+})
+</code></pre>
+<p>上面只是<code>ThemeData</code>的一小部分属性，完整的数据定义读者可以查看SDK。上面属性中需要说明的是<code>primarySwatch</code>，它是主题颜色的一个"样本色"，通过这个样本色可以在一些条件下生成一些其他的属性，例如，如果没有指定<code>primaryColor</code>，并且当前主题不是深色主题，那么<code>primaryColor</code>就会默认为<code>primarySwatch</code>指定的颜色，还有一些相似的属性如<code>indicatorColor</code>也会受<code>primarySwatch</code>影响。</p>
+<h3 id="2-实例"><a class="header" href="#2-实例">2. 实例</a></h3>
+<p>我们实现一个路由换肤功能：</p>
+<pre><code class="language-dart">
+class ThemeTestRoute extends StatefulWidget {
+  @override
+  _ThemeTestRouteState createState() =&gt; _ThemeTestRouteState();
+}
+
+class _ThemeTestRouteState extends State&lt;ThemeTestRoute&gt; {
+  var _themeColor = Colors.teal; //当前路由主题色
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
+    return Theme(
+      data: ThemeData(
+          primarySwatch: _themeColor, //用于导航栏、FloatingActionButton的背景色等
+          iconTheme: IconThemeData(color: _themeColor) //用于Icon颜色
+      ),
+      child: Scaffold(
+        appBar: AppBar(title: Text("主题测试")),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: &lt;Widget&gt;[
+            //第一行Icon使用主题中的iconTheme
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: &lt;Widget&gt;[
+                  Icon(Icons.favorite),
+                  Icon(Icons.airport_shuttle),
+                  Text("  颜色跟随主题")
+                ]
+            ),
+            //为第二行Icon自定义颜色（固定为黑色)
+            Theme(
+              data: themeData.copyWith(
+                iconTheme: themeData.iconTheme.copyWith(
+                    color: Colors.black
+                ),
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: &lt;Widget&gt;[
+                    Icon(Icons.favorite),
+                    Icon(Icons.airport_shuttle),
+                    Text("  颜色固定黑色")
+                  ]
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () =&gt;  //切换主题
+                setState(() =&gt;
+                _themeColor =
+                _themeColor == Colors.teal ? Colors.blue : Colors.teal
+                ),
+            child: Icon(Icons.palette)
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>运行后点击右下角悬浮按钮则可以切换主题，如图7-6、7-7所示：</p>
+<p><img src="../imgs/7-6.png" alt="图7-6" /><img src="../imgs/7-7.png" alt="图7-7" /></p>
+<p>需要注意的有三点：</p>
+<ul>
+<li>
+<p>可以通过局部主题覆盖全局主题，正如代码中通过 Theme 为第二行图标指定固定颜色（黑色）一样，这是一种常用的技巧，Flutter 中会经常使用这种方法来自定义子树主题。那么为什么局部主题可以覆盖全局主题？这主要是因为 widget 中使用主题样式时是通过<code>Theme.of(BuildContext context)</code>来获取的，我们看看其简化后的代码：</p>
+</li>
+<li>
+<pre><code class="language-dart">static ThemeData of(BuildContext context, { bool shadowThemeOnly = false }) {
+   // 简化代码，并非源码  
+   return context.dependOnInheritedWidgetOfExactType&lt;_InheritedTheme&gt;().theme.data
+}
+</code></pre>
+<p><code>context.dependOnInheritedWidgetOfExactType</code> 会在 widget 树中从当前位置向上查找第一个类型为<code>_InheritedTheme</code>的 widget。所以当局部指定<code>Theme</code>后，其子树中通过<code>Theme.of()</code>向上查找到的第一个<code>_InheritedTheme</code>便是我们指定的<code>Theme</code>。</p>
+</li>
+<li>
+<p>本示例是对单个路由换肤，如果想要对整个应用换肤，则可以去修改<code>MaterialApp</code>的<code>theme</code>属性。</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter7/provider.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter7/value_listenable_builder.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter7/provider.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter7/value_listenable_builder.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

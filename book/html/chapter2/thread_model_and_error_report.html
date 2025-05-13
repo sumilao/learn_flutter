@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2.8：Flutter异常捕获 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="28-flutter异常捕获"><a class="header" href="#28-flutter异常捕获">2.8 Flutter异常捕获</a></h1>
+<p>在介绍Flutter异常捕获之前必须先了解一下Dart单线程模型，只有了解了Dart的代码执行流程，我们才能知道该在什么地方去捕获异常。</p>
+<h2 id="281-dart单线程模型"><a class="header" href="#281-dart单线程模型">2.8.1 Dart单线程模型</a></h2>
+<p>在 Java 和 Objective-C（以下简称“OC”）中，如果程序发生异常且没有被捕获，那么程序将会终止，但是这在Dart或JavaScript中则不会！究其原因，这和它们的运行机制有关系。Java 和 OC 都是多线程模型的编程语言，任意一个线程触发异常且该异常未被捕获时，就会导致整个进程退出。但 Dart 和 JavaScript 不会，它们都是单线程模型，运行机制很相似(但有区别)，下面我们通过Dart官方提供的一张图（2-21）来看看 Dart 大致运行原理：</p>
+<p><img src="../imgs/2-21.png" alt="图2-21" /></p>
+<p>Dart 在单线程中是以消息循环机制来运行的，其中包含两个任务队列，一个是“微任务队列”  <strong>microtask queue</strong>，另一个叫做“事件队列” <strong>event queue</strong>。从图中可以发现，微任务队列的执行优先级高于事件队列。</p>
+<p>现在我们来介绍一下Dart线程运行过程，如上图中所示，入口函数 main() 执行完后，消息循环机制便启动了。首先会按照先进先出的顺序逐个执行微任务队列中的任务，事件任务执行完毕后程序便会退出，但是，在事件任务执行的过程中也可以插入新的微任务和事件任务，在这种情况下，整个线程的执行过程便是一直在循环，不会退出，而Flutter中，主线程的执行过程正是如此，永不终止。</p>
+<p>在Dart中，所有的外部事件任务都在事件队列中，如IO、计时器、点击、以及绘制事件等，而微任务通常来源于Dart内部，并且微任务非常少，之所以如此，是因为微任务队列优先级高，如果微任务太多，执行时间总和就越久，事件队列任务的延迟也就越久，对于GUI应用来说最直观的表现就是比较卡，所以必须得保证微任务队列不会太长。值得注意的是，我们可以通过<code>Future.microtask(…)</code>方法向微任务队列插入一个任务。</p>
+<p>在事件循环中，当某个任务发生异常并没有被捕获时，程序并不会退出，而直接导致的结果是<strong>当前任务</strong>的后续代码就不会被执行了，也就是说一个任务中的异常是不会影响其他任务执行的。</p>
+<h2 id="282-flutter异常捕获"><a class="header" href="#282-flutter异常捕获">2.8.2 Flutter异常捕获</a></h2>
+<p>Dart中可以通过<code>try/catch/finally</code>来捕获代码块异常，这个和其他编程语言类似，如果读者不清楚，可以查看Dart语言文档，不再赘述，下面我们看看Flutter中的异常捕获。</p>
+<h3 id="1-flutter框架异常捕获"><a class="header" href="#1-flutter框架异常捕获">1. Flutter框架异常捕获</a></h3>
+<p>Flutter 框架为我们在很多关键的方法进行了异常捕获。这里举一个例子，当我们布局发生越界或不合规范时，Flutter就会自动弹出一个错误界面，这是因为Flutter已经在执行build方法时添加了异常捕获，最终的源码如下：</p>
+<pre><code class="language-dart">@override
+void performRebuild() {
+ ...
+  try {
+    //执行build方法  
+    built = build();
+  } catch (e, stack) {
+    // 有异常时则弹出错误提示  
+    built = ErrorWidget.builder(_debugReportException('building $this', e, stack));
+  } 
+  ...
+}      
+</code></pre>
+<p>可以看到，在发生异常时，Flutter默认的处理方式是弹一个ErrorWidget，但如果我们想自己捕获异常并上报到报警平台的话应该怎么做？我们进入<code>_debugReportException()</code>方法看看：</p>
+<pre><code class="language-dart">FlutterErrorDetails _debugReportException(
+  String context,
+  dynamic exception,
+  StackTrace stack, {
+  InformationCollector informationCollector
+}) {
+  //构建错误详情对象  
+  final FlutterErrorDetails details = FlutterErrorDetails(
+    exception: exception,
+    stack: stack,
+    library: 'widgets library',
+    context: context,
+    informationCollector: informationCollector,
+  );
+  //报告错误 
+  FlutterError.reportError(details);
+  return details;
+}
+</code></pre>
+<p>我们发现，错误是通过<code>FlutterError.reportError</code>方法上报的，继续跟踪：</p>
+<pre><code class="language-dart">
+static void reportError(FlutterErrorDetails details) {
+  ...
+  if (onError != null)
+    onError(details); //调用了onError回调
+}
+</code></pre>
+<p>我们发现<code>onError</code>是<code>FlutterError</code>的一个静态属性，它有一个默认的处理方法 <code>dumpErrorToConsole</code>，到这里就清晰了，如果我们想自己上报异常，只需要提供一个自定义的错误处理回调即可，如：</p>
+<pre><code class="language-dart">void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    reportError(details);
+  };
+ ...
+}
+</code></pre>
+<p>这样我们就可以处理那些Flutter为我们捕获的异常了，接下来我们看看如何捕获其他异常。</p>
+<h3 id="2-其他异常捕获与日志收集"><a class="header" href="#2-其他异常捕获与日志收集">2. 其他异常捕获与日志收集</a></h3>
+<p>在Flutter中，还有一些Flutter没有为我们捕获的异常，如调用空对象方法异常、Future中的异常。在Dart中，异常分两类：同步异常和异步异常，同步异常可以通过<code>try/catch</code>捕获，而异步异常则比较麻烦，如下面的代码是捕获不了<code>Future</code>的异常的：</p>
+<pre><code class="language-dart">try{
+    Future.delayed(Duration(seconds: 1)).then((e) =&gt; Future.error("xxx"));
+}catch (e){
+    print(e)
+}
+</code></pre>
+<p>Dart中有一个<code>runZoned(...)</code> 方法，可以给执行对象指定一个Zone。Zone表示一个代码执行的环境范围，为了方便理解，读者可以将Zone类比为一个代码执行沙箱，不同沙箱的之间是隔离的，沙箱可以捕获、拦截或修改一些代码行为，如Zone中可以捕获日志输出、Timer创建、微任务调度的行为，同时Zone也可以捕获所有未处理的异常。下面我们看看<code>runZoned(...)</code>方法定义：</p>
+<pre><code class="language-dart">R runZoned&lt;R&gt;(R body(), {
+    Map zoneValues, 
+    ZoneSpecification zoneSpecification,
+}) 
+</code></pre>
+<ul>
+<li>
+<p><code>zoneValues</code>: Zone 的私有数据，可以通过实例<code>zone[key]</code>获取，可以理解为每个“沙箱”的私有数据。</p>
+</li>
+<li>
+<p><code>zoneSpecification</code>：Zone的一些配置，可以自定义一些代码行为，比如拦截日志输出和错误等，举个例子：</p>
+<pre><code class="language-dart">runZoned(
+  () =&gt; runApp(MyApp()),
+  zoneSpecification: ZoneSpecification(
+    // 拦截print 蜀西湖
+    print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+      parent.print(zone, "Interceptor: $line");
+    },
+    // 拦截未处理的异步错误
+    handleUncaughtError: (Zone self, ZoneDelegate parent, Zone zone,
+                          Object error, StackTrace stackTrace) {
+      parent.print(zone, '${error.toString()} $stackTrace');
+    },
+  ),
+);
+</code></pre>
+<p>这样一来，我们 APP 中所有调用<code>print</code>方法输出日志的行为都会被拦截，通过这种方式，我们也可以在应用中记录日志，等到应用触发未捕获的异常时，将异常信息和日志统一上报。</p>
+<p>另外我们还拦截了未被捕获的异步错误，这样一来，结合上面的 <code>FlutterError.onError</code> 我们就可以捕获我们Flutter应用错误了并进行上报了！</p>
+</li>
+</ul>
+<h3 id="3-最终的错误上报代码"><a class="header" href="#3-最终的错误上报代码">3. 最终的错误上报代码</a></h3>
+<p>我们最终的异常捕获和上报代码大致如下：</p>
+<pre><code class="language-dart">void collectLog(String line){
+    ... //收集日志
+}
+void reportErrorAndLog(FlutterErrorDetails details){
+    ... //上报错误和日志逻辑
+}
+
+FlutterErrorDetails makeDetails(Object obj, StackTrace stack){
+    ...// 构建错误信息
+}
+
+void main() {
+  var onError = FlutterError.onError; //先将 onerror 保存起来
+  FlutterError.onError = (FlutterErrorDetails details) {
+    onError?.call(details); //调用默认的onError
+    reportErrorAndLog(details); //上报
+  };
+  runZoned(
+  () =&gt; runApp(MyApp()),
+  zoneSpecification: ZoneSpecification(
+    // 拦截print
+    print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+      collectLog(line);
+      parent.print(zone, "Interceptor: $line");
+    },
+    // 拦截未处理的异步错误
+    handleUncaughtError: (Zone self, ZoneDelegate parent, Zone zone,
+                          Object error, StackTrace stackTrace) {
+      reportErrorAndLog(details);
+      parent.print(zone, '${error.toString()} $stackTrace');
+    },
+  ),
+ );
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter2/flutter_app_debug.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter3/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter2/flutter_app_debug.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter3/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

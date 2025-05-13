@@ -1,0 +1,336 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>4.7：对齐与相对定位（Align） - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="47-对齐与相对定位align"><a class="header" href="#47-对齐与相对定位align">4.7 对齐与相对定位（Align）</a></h1>
+<p>在上一节中我们讲过通过<code>Stack</code>和<code>Positioned</code>，我们可以指定一个或多个子元素相对于父元素各个边的精确偏移，并且可以重叠。但如果我们只想简单的调整<strong>一个</strong>子元素在父元素中的位置的话，使用<code>Align</code>组件会更简单一些。</p>
+<h2 id="471-align"><a class="header" href="#471-align">4.7.1 Align</a></h2>
+<p><code>Align</code> 组件可以调整子组件的位置，定义如下：</p>
+<pre><code class="language-dart">Align({
+  Key key,
+  this.alignment = Alignment.center,
+  this.widthFactor,
+  this.heightFactor,
+  Widget child,
+})
+</code></pre>
+<ul>
+<li><code>alignment</code> : 需要一个<code>AlignmentGeometry</code>类型的值，表示子组件在父组件中的起始位置。<code>AlignmentGeometry</code> 是一个抽象类，它有两个常用的子类：<code>Alignment</code>和 <code>FractionalOffset</code>，我们将在下面的示例中详细介绍。</li>
+<li><code>widthFactor</code>和<code>heightFactor</code>是用于确定<code>Align</code> 组件本身宽高的属性；它们是两个缩放因子，会分别乘以子元素的宽、高，最终的结果就是<code>Align</code> 组件的宽高。如果值为<code>null</code>，则组件的宽高将会占用尽可能多的空间。</li>
+</ul>
+<h3 id="1-示例"><a class="header" href="#1-示例">1. 示例</a></h3>
+<p>我们先来看一个简单的例子：</p>
+<pre><code class="language-dart">Container(
+  height: 120.0,
+  width: 120.0,
+  color: Colors.blue.shade50,
+  child: Align(
+    alignment: Alignment.topRight,
+    child: FlutterLogo(
+      size: 60,
+    ),
+  ),
+)
+</code></pre>
+<p>运行效果如图4-19所示：</p>
+<p><img src="../imgs/4-19.png" alt="图4-19" /></p>
+<p><code>FlutterLogo</code> 是Flutter SDK 提供的一个组件，内容就是 Flutter 的 logo 。在上面的例子中，我们显式指定了<code>Container</code>的宽、高都为 120。如果我们不显式指定宽高，而通过同时指定<code>widthFactor</code>和<code>heightFactor</code> 为 2 也是可以达到同样的效果：</p>
+<pre><code class="language-dart">Align(
+  widthFactor: 2,
+  heightFactor: 2,
+  alignment: Alignment.topRight,
+  child: FlutterLogo(
+    size: 60,
+  ),
+),
+</code></pre>
+<p>因为<code>FlutterLogo</code>的宽高为 60，则<code>Align</code>的最终宽高都为<code>2*60=120</code>。</p>
+<p>另外，我们通过<code>Alignment.topRight</code>将<code>FlutterLogo</code>定位在<code>Container</code>的右上角。那<code>Alignment.topRight</code>是什么呢？通过源码我们可以看到其定义如下：</p>
+<pre><code class="language-dart">//右上角
+static const Alignment topRight = Alignment(1.0, -1.0);
+</code></pre>
+<p>可以看到它只是<code>Alignment</code>的一个实例，下面我们介绍一下<code>Alignment</code>。</p>
+<h3 id="2-alignment"><a class="header" href="#2-alignment">2. Alignment</a></h3>
+<p><code>Alignment</code>继承自<code>AlignmentGeometry</code>，表示矩形内的一个点，他有两个属性<code>x</code>、<code>y</code>，分别表示在水平和垂直方向的偏移，<code>Alignment</code>定义如下：</p>
+<pre><code class="language-dart">Alignment(this.x, this.y)
+</code></pre>
+<p><code>Alignment</code> Widget会以<strong>矩形的中心点作为坐标原点</strong>，即<code>Alignment(0.0, 0.0)</code> 。<code>x</code>、<code>y</code>的值从-1到1分别代表矩形左边到右边的距离和顶部到底边的距离，因此2个水平（或垂直）单位则等于矩形的宽（或高），如<code>Alignment(-1.0, -1.0)</code> 代表矩形的左侧顶点，而<code>Alignment(1.0, 1.0)</code>代表右侧底部终点，而<code>Alignment(1.0, -1.0)</code> 则正是右侧顶点，即<code>Alignment.topRight</code>。为了使用方便，矩形的原点、四个顶点，以及四条边的终点在<code>Alignment</code>类中都已经定义为了静态常量。</p>
+<p><code>Alignment</code>可以通过其<strong>坐标转换公式</strong>将其坐标转为子元素的具体偏移坐标：</p>
+<pre><code>实际偏移 = (Alignment.x * (parentWidth - childWidth) / 2 + (parentWidth - childWidth) / 2,
+        Alignment.y * (parentHeight - childHeight) / 2 + (parentHeight - childHeight) / 2)
+</code></pre>
+<p>其中<code>childWidth</code>为子元素的宽度，<code>childHeight</code>为子元素高度。</p>
+<p>现在我们再看看上面的示例，我们将<code>Alignment(1.0, -1.0)</code>带入上面公式，可得<code>FlutterLogo</code>的实际偏移坐标正是（60，0）。下面再看一个例子：</p>
+<pre><code class="language-dart"> Align(
+  widthFactor: 2,
+  heightFactor: 2,
+  alignment: Alignment(2,0.0),
+  child: FlutterLogo(
+    size: 60,
+  ),
+)
+</code></pre>
+<p>我们可以先想象一下运行效果：将<code>Alignment(2,0.0)</code>带入上述坐标转换公式，可以得到<code>FlutterLogo</code>的实际偏移坐标为（90，30）。实际运行如图4-20所示：</p>
+<p><img src="../imgs/4-20.png" alt="图4-20" /></p>
+<h3 id="3-fractionaloffset"><a class="header" href="#3-fractionaloffset">3. FractionalOffset</a></h3>
+<p><code>FractionalOffset</code> 继承自 <code>Alignment </code>，它和 <code>Alignment </code>唯一的区别就是坐标原点不同！<code>FractionalOffset</code> 的坐标原点为矩形的左侧顶点，这和布局系统的一致，所以理解起来会比较容易。<code>FractionalOffset</code>的坐标转换公式为：</p>
+<pre><code>实际偏移 = (FractionalOffse.x * (parentWidth - childWidth), FractionalOffse.y * (parentHeight - childHeight))
+</code></pre>
+<p>下面看一个例子：</p>
+<pre><code class="language-dart">Container(
+  height: 120.0,
+  width: 120.0,
+  color: Colors.blue[50],
+  child: Align(
+    alignment: FractionalOffset(0.2, 0.6),
+    child: FlutterLogo(
+      size: 60,
+    ),
+  ),
+)
+</code></pre>
+<p>实际运行效果如图4-21所示下：</p>
+<p><img src="../imgs/4-21.png" alt="图4-21" /></p>
+<p>我们将<code>FractionalOffset(0.2, 0.6)</code>带入坐标转换公式得<code>FlutterLogo</code>实际偏移为（12，36），和实际运行效果吻合。</p>
+<h2 id="472-align和stack对比"><a class="header" href="#472-align和stack对比">4.7.2 Align和Stack对比</a></h2>
+<p>可以看到，<code>Align</code>和<code>Stack</code>/<code>Positioned</code>都可以用于指定子元素相对于父元素的偏移，但它们还是有两个主要区别：</p>
+<ol>
+<li>定位参考系统不同；<code>Stack</code>/<code>Positioned</code>定位的参考系可以是父容器矩形的四个顶点；而<code>Align</code>则需要先通过<code>alignment</code> 参数来确定坐标原点，不同的<code>alignment</code>会对应不同原点，最终的偏移是需要通过<code>alignment</code>的转换公式来计算出。</li>
+<li><code>Stack</code>可以有多个子元素，并且子元素可以堆叠，而<code>Align</code>只能有一个子元素，不存在堆叠。</li>
+</ol>
+<h2 id="473-center组件"><a class="header" href="#473-center组件">4.7.3 Center组件</a></h2>
+<p>我们在前面章节的例子中已经使用过<code>Center</code>组件来居中子元素了，现在我们正式来介绍一下它。通过查找SDK源码，我们看到<code>Center</code>组件定义如下：</p>
+<pre><code class="language-dart">class Center extends Align {
+  const Center({ Key? key, double widthFactor, double heightFactor, Widget? child })
+    : super(key: key, widthFactor: widthFactor, heightFactor: heightFactor, child: child);
+}
+</code></pre>
+<p>可以看到<code>Center</code>继承自<code>Align</code>，它比<code>Align</code>只少了一个<code>alignment</code> 参数；由于<code>Align</code>的构造函数中<code>alignment</code> 值为<code>Alignment.center</code>，所以，我们可以认为<code>Center</code>组件其实是对齐方式确定（<code>Alignment.center</code>）了的<code>Align</code>。</p>
+<p>上面我们讲过当<code>widthFactor</code>或<code>heightFactor</code>为<code>null</code>时组件的宽高将会占用尽可能多的空间，这一点需要特别注意，我们通过一个示例说明：</p>
+<pre><code class="language-dart">...//省略无关代码
+DecoratedBox(
+  decoration: BoxDecoration(color: Colors.red),
+  child: Center(
+    child: Text("xxx"),
+  ),
+),
+DecoratedBox(
+  decoration: BoxDecoration(color: Colors.red),
+  child: Center(
+    widthFactor: 1,
+    heightFactor: 1,
+    child: Text("xxx"),
+  ),
+)
+</code></pre>
+<p>运行效果如图4-22所示：</p>
+<p><img src="../imgs/4-22.png" alt="图4-22" /></p>
+<h2 id="474-总结"><a class="header" href="#474-总结">4.7.4 总结</a></h2>
+<p>本节重点介绍了<code>Align</code>组件及两种偏移类<code>Alignment</code> 和<code>FractionalOffset</code>，读者需要理解这两种偏移类的区别及各自的坐标转化公式。另外，在此建议读者在需要制定一些精确的偏移时应优先使用<code>FractionalOffset</code>，因为它的坐标原点和布局系统相同，能更容易算出实际偏移。</p>
+<p>在后面，我们又介绍了<code>Align</code>组件和<code>Stack</code>/<code>Positioned</code>、<code>Center</code>的关系，读者可以对比理解。</p>
+<p>还有，熟悉Web开发的同学可能会发现<code>Align</code>组件的特性和Web开发中相对定位（<code>position: relative</code>）非常像，是的！在大多数时候，我们可以直接使用<code>Align</code>组件来实现Web中相对定位的效果，读者可以类比记忆。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter4/stack.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter4/layoutbuilder.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter4/stack.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter4/layoutbuilder.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9.1：Flutter动画简介 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="91-flutter动画简介"><a class="header" href="#91-flutter动画简介">9.1 Flutter动画简介</a></h1>
+<h2 id="911-动画基本原理"><a class="header" href="#911-动画基本原理">9.1.1 动画基本原理</a></h2>
+<p>在任何系统的UI框架中，动画实现的原理都是相同的，即：在一段时间内，快速地多次改变UI外观；由于人眼会产生视觉暂留，所以最终看到的就是一个“连续”的动画，这和电影的原理是一样的。我们将UI的一次改变称为一个动画帧，对应一次屏幕刷新，而决定动画流畅度的一个重要指标就是帧率FPS（Frame Per Second），即每秒的动画帧数。很明显，帧率越高则动画就会越流畅！一般情况下，对于人眼来说，动画帧率超过16 FPS，就基本能看了，超过 32 FPS就会感觉相对平滑，而超过 32 FPS，大多数人基本上就感受不到差别了。由于动画的每一帧都是要改变UI输出，所以在一个时间段内连续的改变UI输出是比较耗资源的，对设备的软硬件系统要求都较高，所以在UI系统中，动画的平均帧率是重要的性能指标，而在Flutter中，理想情况下是可以实现 60FPS 的，这和原生应用能达到的帧率是基本是持平的。</p>
+<h2 id="912-flutter中动画抽象"><a class="header" href="#912-flutter中动画抽象">9.1.2 Flutter中动画抽象</a></h2>
+<p>为了方便开发者创建动画，不同的UI系统对动画都进行了一些抽象，比如在 Android 中可以通过XML来描述一个动画然后设置给View。Flutter中也对动画进行了抽象，主要涉及 Animation、Curve、Controller、Tween这四个角色，它们一起配合来完成一个完整动画，下面我们一一来介绍它们。</p>
+<h3 id="1-animation"><a class="header" href="#1-animation">1. Animation</a></h3>
+<p><code>Animation</code>是一个抽象类，它本身和UI渲染没有任何关系，而它主要的功能是保存动画的插值和状态；其中一个比较常用的<code>Animation</code>类是<code>Animation&lt;double&gt;</code>。<code>Animation</code>对象是一个在一段时间内依次生成一个区间(Tween)之间值的类。<code>Animation</code>对象在整个动画执行过程中输出的值可以是线性的、曲线的、一个步进函数或者任何其他曲线函数等等，这由<code>Curve</code>来决定。 根据<code>Animation</code>对象的控制方式，动画可以正向运行（从起始状态开始，到终止状态结束），也可以反向运行，甚至可以在中间切换方向。<code>Animation</code>还可以生成除<code>double</code>之外的其他类型值，如：<code>Animation&lt;Color&gt;</code> 或<code> Animation&lt;Size&gt;</code>。在动画的每一帧中，我们可以通过<code>Animation</code>对象的<code>value</code>属性获取动画的当前状态值。</p>
+<h4 id="动画通知"><a class="header" href="#动画通知">动画通知</a></h4>
+<p>我们可以通过<code>Animation</code>来监听动画每一帧以及执行状态的变化，<code>Animation</code>有如下两个方法：</p>
+<ol>
+<li><code>addListener()</code>；它可以用于给<code>Animation</code>添加帧监听器，在每一帧都会被调用。帧监听器中最常见的行为是改变状态后调用<code>setState()</code>来触发UI重建。</li>
+<li><code>addStatusListener()</code>；它可以给<code>Animation</code>添加“动画状态改变”监听器；动画开始、结束、正向或反向（见<code>AnimationStatus</code>定义）时会调用状态改变的监听器。</li>
+</ol>
+<p>读者在此只需要知道帧监听器和状态监听器的区别，在后面的章节中我们将会举例说明。</p>
+<h3 id="2-curve"><a class="header" href="#2-curve">2. Curve</a></h3>
+<p>动画过程可以是匀速的、匀加速的或者先加速后减速等。Flutter中通过<code>Curve</code>（曲线）来描述动画过程，我们把匀速动画称为线性的(Curves.linear)，而非匀速动画称为非线性的。</p>
+<p>我们可以通过<code>CurvedAnimation</code>来指定动画的曲线，如：</p>
+<pre><code class="language-dart">final CurvedAnimation curve =
+    CurvedAnimation(parent: controller, curve: Curves.easeIn);
+</code></pre>
+<p><code>CurvedAnimation</code>和<code>AnimationController</code>（下面介绍）都是<code>Animation&lt;double&gt;</code>类型。<code>CurvedAnimation</code>可以通过包装<code>AnimationController</code>和<code>Curve</code>生成一个新的动画对象 ，我们正是通过这种方式来将动画和动画执行的曲线关联起来的。我们指定动画的曲线为<code> Curves.easeIn</code>，它表示动画开始时比较慢，结束时比较快。 <a href="https://docs.flutter.io/flutter/animation/Curves-class.html">Curves</a> 类是一个预置的枚举类，定义了许多常用的曲线，下面列几种常用的：</p>
+<div class="table-wrapper"><table><thead><tr><th>Curves曲线</th><th>动画过程</th></tr></thead><tbody>
+<tr><td>linear</td><td>匀速的</td></tr>
+<tr><td>decelerate</td><td>匀减速</td></tr>
+<tr><td>ease</td><td>开始加速，后面减速</td></tr>
+<tr><td>easeIn</td><td>开始慢，后面快</td></tr>
+<tr><td>easeOut</td><td>开始快，后面慢</td></tr>
+<tr><td>easeInOut</td><td>开始慢，然后加速，最后再减速</td></tr>
+</tbody></table>
+</div>
+<p>除了上面列举的， <a href="https://docs.flutter.io/flutter/animation/Curves-class.html">Curves</a> 类中还定义了许多其他的曲线，在此便不一一介绍，读者可以自行查看Curves类定义。</p>
+<p>当然我们也可以创建自己Curve，例如我们定义一个正弦曲线：</p>
+<pre><code class="language-dart">class ShakeCurve extends Curve {
+  @override
+  double transform(double t) {
+    return math.sin(t * math.PI * 2);
+  }
+}
+</code></pre>
+<h3 id="3-animationcontroller"><a class="header" href="#3-animationcontroller">3. AnimationController</a></h3>
+<p><code>AnimationController</code>用于控制动画，它包含动画的启动<code>forward()</code>、停止<code>stop()</code> 、反向播放 <code>reverse()</code>等方法。<code>AnimationController</code>会在动画的每一帧，就会生成一个新的值。默认情况下，<code>AnimationController</code>在给定的时间段内线性的生成从 0.0 到1.0（默认区间）的数字。 例如，下面代码创建一个<code>Animation</code>对象（但不会启动动画）：</p>
+<pre><code class="language-dart">final AnimationController controller = AnimationController(
+  duration: const Duration(milliseconds: 2000),
+  vsync: this,
+);
+</code></pre>
+<p><code>AnimationController</code>生成数字的区间可以通过<code>lowerBound</code>和<code>upperBound</code>来指定，如：</p>
+<pre><code class="language-dart">final AnimationController controller = AnimationController( 
+ duration: const Duration(milliseconds: 2000), 
+ lowerBound: 10.0,
+ upperBound: 20.0,
+ vsync: this
+);
+</code></pre>
+<p><code>AnimationController</code>派生自<code>Animation&lt;double&gt;</code>，因此可以在需要<code>Animation</code>对象的任何地方使用。 但是，<code>AnimationController</code>具有控制动画的其他方法，例如<code>forward()</code>方法可以启动正向动画，<code>reverse()</code>可以启动反向动画。在动画开始执行后开始生成动画帧，屏幕每刷新一次就是一个动画帧，在动画的每一帧，会随着根据动画的曲线来生成当前的动画值（<code>Animation.value</code>），然后根据当前的动画值去构建UI，当所有动画帧依次触发时，动画值会依次改变，所以构建的UI也会依次变化，所以最终我们可以看到一个完成的动画。 另外在动画的每一帧，<code>Animation</code>对象会调用其帧监听器，等动画状态发生改变时（如动画结束）会调用状态改变监听器。</p>
+<p><code>duration</code>表示动画执行的时长，通过它我们可以控制动画的速度。</p>
+<blockquote>
+<p><strong>注意</strong>： 在某些情况下，动画值可能会超出<code>AnimationController</code>的[0.0，1.0]的范围，这取决于具体的曲线。例如，<code>fling()</code>函数可以根据我们手指滑动（甩出）的速度(velocity)、力量(force)等来模拟一个手指甩出动画，因此它的动画值可以在[0.0，1.0]范围之外 。也就是说，根据选择的曲线，<code>CurvedAnimation</code>的输出可以具有比输入更大的范围。例如，Curves.elasticIn等弹性曲线会生成大于或小于默认范围的值。</p>
+</blockquote>
+<h4 id="ticker"><a class="header" href="#ticker">Ticker</a></h4>
+<p>当创建一个<code>AnimationController</code>时，需要传递一个<code>vsync</code>参数，它接收一个<code>TickerProvider</code>类型的对象，它的主要职责是创建<code>Ticker</code>，定义如下：</p>
+<pre><code class="language-dart">abstract class TickerProvider {
+  //通过一个回调创建一个Ticker
+  Ticker createTicker(TickerCallback onTick);
+}
+</code></pre>
+<p>Flutter 应用在启动时都会绑定一个<code>SchedulerBinding</code>，通过<code>SchedulerBinding</code>可以给每一次屏幕刷新添加回调，而<code>Ticker</code>就是通过<code>SchedulerBinding</code>来添加屏幕刷新回调，这样一来，每次屏幕刷新都会调用<code>TickerCallback</code>。使用<code>Ticker</code>(而不是<code>Timer</code>)来驱动动画会防止屏幕外动画（动画的UI不在当前屏幕时，如锁屏时）消耗不必要的资源，因为Flutter中屏幕刷新时会通知到绑定的<code>SchedulerBinding</code>，而<code>Ticker</code>是受<code>SchedulerBinding</code>驱动的，由于锁屏后屏幕会停止刷新，所以<code>Ticker</code>就不会再触发。</p>
+<p>通常我们会将<code>SingleTickerProviderStateMixin</code>添加到<code>State</code>的定义中，然后将State对象作为<code>vsync</code>的值，这在后面的例子中可以见到。</p>
+<h3 id="4-tween"><a class="header" href="#4-tween">4. Tween</a></h3>
+<h4 id="1简介"><a class="header" href="#1简介">1）简介</a></h4>
+<p>默认情况下，<code>AnimationController</code>对象值的范围是[0.0，1.0]。如果我们需要构建UI的动画值在不同的范围或不同的数据类型，则可以使用<code>Tween</code>来添加映射以生成不同的范围或数据类型的值。例如，像下面示例，<code>Tween</code>生成[-200.0，0.0]的值：</p>
+<pre><code class="language-dart">final Tween doubleTween = Tween&lt;double&gt;(begin: -200.0, end: 0.0);
+</code></pre>
+<p><code>Tween</code>构造函数需要<code>begin</code>和<code>end</code>两个参数。<code>Tween</code>的唯一职责就是定义从输入范围到输出范围的映射。输入范围通常为[0.0，1.0]，但这不是必须的，我们可以自定义需要的范围。</p>
+<p><code>Tween</code>继承自<code>Animatable&lt;T&gt;</code>，而不是继承自<code>Animation&lt;T&gt;</code>，<code>Animatable</code>中主要定义动画值的映射规则。</p>
+<p>下面我们看一个ColorTween将动画输入范围映射为两种颜色值之间过渡输出的例子：</p>
+<pre><code class="language-dart">final Tween colorTween =
+    ColorTween(begin: Colors.transparent, end: Colors.black54);
+</code></pre>
+<p><code>Tween</code>对象不存储任何状态，相反，它提供了<code>evaluate(Animation&lt;double&gt; animation)</code>方法，它可以获取动画当前映射值。 <code>Animation</code>对象的当前值可以通过<code>value()</code>方法取到。<code>evaluate</code>函数还执行一些其他处理，例如分别确保在动画值为0.0和1.0时返回开始和结束状态。</p>
+<h4 id="2tweenanimate"><a class="header" href="#2tweenanimate">2）Tween.animate</a></h4>
+<p>要使用 Tween 对象，需要调用其<code>animate()</code>方法，然后传入一个控制器对象。例如，以下代码在 500 毫秒内生成从 0 到 255 的整数值。</p>
+<pre><code class="language-dart">final AnimationController controller = AnimationController(
+  duration: const Duration(milliseconds: 500), 
+  vsync: this,
+);
+Animation&lt;int&gt; alpha = IntTween(begin: 0, end: 255).animate(controller);
+</code></pre>
+<p>注意<code>animate()</code>返回的是一个<code>Animation</code>，而不是一个<code>Animatable</code>。</p>
+<p>以下示例构建了一个控制器、一条曲线和一个 Tween：</p>
+<pre><code class="language-dart">final AnimationController controller = AnimationController(
+  duration: const Duration(milliseconds: 500), 
+  vsync: this,
+);
+final Animation curve = CurvedAnimation(parent: controller, curve: Curves.easeOut);
+Animation&lt;int&gt; alpha = IntTween(begin: 0, end: 255).animate(curve);
+</code></pre>
+<h2 id="913-线性插值lerp函数"><a class="header" href="#913-线性插值lerp函数">9.1.3 线性插值lerp函数</a></h2>
+<p>动画的原理其实就是每一帧绘制不同的内容，一般都是指定起始和结束状态，然后在一段时间内从起始状态逐渐变为结束状态，而具体某一帧的状态值会根据动画的进度来算出，因此，Flutter 中给有可能会做动画的一些状态属性都定义了静态的 lerp 方法（线性插值），比如：</p>
+<pre><code class="language-dart">//a 为起始颜色，b为终止颜色，t为当前动画的进度[0,1]
+Color.lerp(a, b, t);
+</code></pre>
+<p>lerp 的计算一般遵循： 返回值 = a + (b - a) * t，其他拥有 lerp 方法的类：</p>
+<pre><code class="language-dart">// Size.lerp(a, b, t)
+// Rect.lerp(a, b, t)
+// Offset.lerp(a, b, t)
+// Decoration.lerp(a, b, t)
+// Tween.lerp(t) //起始状态和终止状态在构建 Tween 的时候已经指定了
+...
+</code></pre>
+<p>需要注意，lerp 是<strong>线性</strong>插值，意思是返回值和动画进度t是成<strong>一次函数</strong>（y = kx + b）关系，因为一次函数的图像是一条直线，所以叫线性插值。如果我们想让动画按照一个曲线来执行，我们可以对 t 进行映射，比如要实现匀加速效果，则  t' = at²+bt+c，然后指定加速度 a 和 b 即可（大多数情况下需保证 t' 的取值范围在[0,1]，当然也有一些情况可能会超出该取值范围，比如弹簧（bounce）效果），而不同 Curve 可以按照不同曲线执行动画的原理本质上就是对 t 按照不同映射公式进行映射实现的。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter9/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter9/animation_structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter9/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter9/animation_structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

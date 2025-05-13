@@ -1,0 +1,381 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>13.3：使用Intl包 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="133-使用intl包"><a class="header" href="#133-使用intl包">13.3 使用Intl包</a></h1>
+<h2 id="1331-添加依赖"><a class="header" href="#1331-添加依赖">13.3.1 添加依赖</a></h2>
+<p>使用<a href="https://pub.dartlang.org/packages/intl">Intl</a>包我们不仅可以非常轻松的实现国际化，而且也可以将字符串文本分离成单独的文件，方便开发人员和翻译人员分工协作。为了使用<a href="https://pub.dartlang.org/packages/intl">Intl</a>包我们需要添加两个依赖：</p>
+<pre><code class="language-yaml">dependencies:
+  #...省略无关项
+  intl: ^0.17.0 
+dev_dependencies:
+   #...省略无关项
+  intl_generator:  0.2.1 
+</code></pre>
+<p>intl_generator 包主要包含了一些工具，它在开发阶段主要主要的作用是从代码中提取要国际化的字符串到单独的arb文件和根据arb文件生成对应语言的dart代码，而intl包主要是引用和加载intl_generator生成后的dart代码。下面我们将一步步来说明如何使用：</p>
+<h2 id="1332-第一步创建必要目录"><a class="header" href="#1332-第一步创建必要目录">13.3.2 第一步：创建必要目录</a></h2>
+<p>首先，在项目根目录下创建一个l10n-arb目录，该目录保存我们接下来通过intl_generator命令生成的arb文件。一个简单的arb文件内容如下：</p>
+<pre><code class="language-json">{
+  "@@last_modified": "2018-12-10T15:46:20.897228",
+  "@@locale":"zh_CH",
+  "title": "Flutter应用",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  }
+}
+</code></pre>
+<p>我们根据"@@locale"字段可以看出这个arb对应的是中文简体的翻译，里面的<code>title</code>字段对应的正是我们应用标题的中文简体翻译。<code>@title</code>字段是对<code>title</code>的一些描述信息。</p>
+<p>接下来，我们在lib目录下创建一个l10n的目录，该目录用于保存从arb文件生成的dart代码文件。</p>
+<h2 id="1333-第二步实现localizations和delegate类"><a class="header" href="#1333-第二步实现localizations和delegate类">13.3.3 第二步：实现Localizations和Delegate类</a></h2>
+<p>和上一节中的步骤类似，我们仍然要实现<code>Localizations</code>和Delegate类，不同的是，现在我们在实现时要使用intl包的一些方法（有些是动态生成的）。</p>
+<p>下面我们在<code>lib/l10n</code>目录下新建一个“localization_intl.dart”的文件，文件内容如下：</p>
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'messages_all.dart'; //1
+
+class DemoLocalizations {
+  static Future&lt;DemoLocalizations&gt; load(Locale locale) {
+    final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    final String localeName = Intl.canonicalizedLocale(name);
+    //2
+    return initializeMessages(localeName).then((b) {
+      Intl.defaultLocale = localeName;
+      return DemoLocalizations();
+    });
+  }
+
+  static DemoLocalizations of(BuildContext context) {
+    return Localizations.of&lt;DemoLocalizations&gt;(context, DemoLocalizations);
+  }
+
+  String get title {
+    return Intl.message(
+      'Flutter APP',
+      name: 'title',
+      desc: 'Title for the Demo application',
+    );
+  }
+}
+
+//Locale代理类
+class DemoLocalizationsDelegate extends LocalizationsDelegate&lt;DemoLocalizations&gt; {
+  const DemoLocalizationsDelegate();
+
+  //是否支持某个Local
+  @override
+  bool isSupported(Locale locale) =&gt; ['en', 'zh'].contains(locale.languageCode);
+
+  // Flutter会调用此类加载相应的Locale资源类
+  @override
+  Future&lt;DemoLocalizations&gt; load(Locale locale) {
+    //3
+    return  DemoLocalizations.load(locale);
+  }
+
+  // 当Localizations Widget重新build时，是否调用load重新加载Locale资源.
+  @override
+  bool shouldReload(DemoLocalizationsDelegate old) =&gt; false;
+}
+</code></pre>
+<p>注意：</p>
+<ul>
+<li>注释1的"messages_all.dart"文件是通过<a href="https://pub.dartlang.org/packages/intl_generator">intl_generator</a>工具从arb文件生成的代码，所以在第一次运行生成命令之前，此文件不存在。注释2处的<code>initializeMessages()</code>方法和"messages_all.dart"文件一样，是同时生成的。</li>
+<li>注释3处和上一节示例代码不同，这里我们直接调用<code>DemoLocalizations.load()</code>即可。</li>
+</ul>
+<h2 id="1334-第三步添加需要国际化的属性"><a class="header" href="#1334-第三步添加需要国际化的属性">13.3.4 第三步：添加需要国际化的属性</a></h2>
+<p>现在我们可以在DemoLocalizations类中添加需要国际化的属性或方法，如上面示例代码中的<code>title</code>属性，这时我们就要用到Intl库提供的一些方法，这些方法可以帮我们轻松实现不同语言的一些语法特性，如复数语境，举个例子，比如我们有一个电子邮件列表页，我们需要在顶部显示未读邮件的数量，在未读数量不同事，我们展示的文本可能会不同：</p>
+<div class="table-wrapper"><table><thead><tr><th>未读邮件数</th><th>提示语</th></tr></thead><tbody>
+<tr><td>0</td><td>There are no emails left</td></tr>
+<tr><td>1</td><td>There is 1 email left</td></tr>
+<tr><td>n(n&gt;1)</td><td>There are n emails left</td></tr>
+</tbody></table>
+</div>
+<p>我们可以通过<code>Intl.plural(...)</code>来实现：</p>
+<pre><code class="language-dart">remainingEmailsMessage(int howMany) =&gt; Intl.plural(howMany,
+    zero: 'There are no emails left',
+    one: 'There is $howMany email left',
+    other: 'There are $howMany emails left',
+    name: "remainingEmailsMessage",
+    args: [howMany],
+    desc: "How many emails remain after archiving.",
+    examples: const {'howMany': 42, 'userName': 'Fred'});
+</code></pre>
+<p>可以看到通过<code>Intl.plural</code>方法可以在<code>howMany</code>值不同时输出不同的提示信息。</p>
+<p><a href="https://pub.dartlang.org/packages/intl">Intl</a>包还有一些其他的方法，读者可以自行查看其文档，本书不在赘述。</p>
+<h2 id="1335-第四步生成arb文件"><a class="header" href="#1335-第四步生成arb文件">13.3.5 第四步：生成arb文件</a></h2>
+<p>现在我们可以通<a href="https://pub.dartlang.org/packages/intl_generator">intl_generator</a>包的工具来提取代码中的字符串到一个arb文件，运行如下命名：</p>
+<pre><code class="language-shell">flutter pub pub run intl_generator:extract_to_arb --output-dir=l10n-arb \ lib/l10n/localization_intl.dart
+</code></pre>
+<p>运行此命令后，会将我们之前通过Intl API标识的属性和字符串提取到“l10n-arb/intl_messages.arb”文件中，我们看看其内容：</p>
+<pre><code class="language-json">{
+  "@@last_modified": "2018-12-10T17:37:28.505088",
+  "title": "Flutter APP",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "remainingEmailsMessage": "{howMany,plural, =0{There are no emails left}=1{There is {howMany} email left}other{There are {howMany} emails left}}",
+  "@remainingEmailsMessage": {
+    "description": "How many emails remain after archiving.",
+    "type": "text",
+    "placeholders": {
+      "howMany": {
+        "example": 42
+      }
+    }
+  }
+}
+</code></pre>
+<p>这个是默认的Locale资源文件，如果我们现在要支持中文简体，只需要在该文件同级目录创建一个"intl_zh_CN.arb"文件，然后将"intl_messages.arb"的内容拷贝到"intl_zh_CN.arb"文件，接下来将英文翻译为中文即可，翻译后的"intl_zh_CN.arb"文件内容如下：</p>
+<pre><code class="language-json">{
+  "@@last_modified": "2018-12-10T15:46:20.897228",
+  "@@locale":"zh_CN",
+  "title": "Flutter应用",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "remainingEmailsMessage": "{howMany,plural, =0{没有未读邮件}=1{有{howMany}封未读邮件}other{有{howMany}封未读邮件}}",
+  "@remainingEmailsMessage": {
+    "description": "How many emails remain after archiving.",
+    "type": "text",
+    "placeholders": {
+      "howMany": {
+        "example": 42
+      }
+    }
+  }
+}
+</code></pre>
+<p>我们必须要翻译<code>title</code>和<code>remainingEmailsMessage</code>字段，<code>description</code>是该字段的说明，通常给翻译人员看，代码中不会用到。</p>
+<p>有两点需要说明：</p>
+<ol>
+<li>如果某个特定的arb中缺失某个属性，那么应用将会加载默认的arb文件(intl_messages.arb)中的相应属性，这是Intl的托底策略。</li>
+<li>每次运行提取命令时，intl_messages.arb都会根据代码重新生成，但其他arb文件不会，所以当要添加新的字段或方法时，其他arb文件是增量的，不用担心会覆盖。</li>
+<li>arb文件是标准的，其格式规范可以自行了解。通常会将arb文件交给翻译人员，当他们完成翻译后，我们再通过下面的步骤根据arb文件生成最终的dart代码。</li>
+</ol>
+<h2 id="1336-第五步生成dart代码"><a class="header" href="#1336-第五步生成dart代码">13.3.6 第五步：生成dart代码</a></h2>
+<p>最后一步就是根据arb生成dart文件：</p>
+<pre><code class="language-shell">flutter pub pub run intl_generator:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/l10n/localization_intl.dart l10n-arb/intl_*.arb
+</code></pre>
+<p>这句命令在首次运行时会在"lib/l10n"目录下生成多个文件，对应多种Locale，这些代码便是最终要使用的dart代码。</p>
+<h2 id="1337-总结"><a class="header" href="#1337-总结">13.3.7 总结</a></h2>
+<p>至此，我们将使用<a href="https://pub.dartlang.org/packages/intl">Intl</a>包对APP进行国际化的流程介绍完了，我们可以发现，其中第一步和第二步只在第一次需要，而我们开发时的主要的工作都是在第三步。由于最后两步在第三步完成后每次也都需要，所以我们可以将最后两步放在一个shell脚本里，当我们完成第三步或完成arb文件翻译后只需要分别执行该脚本即可。我们在根目录下创建一个intl.sh的脚本，内容为：</p>
+<pre><code class="language-shell">flutter pub run intl_generator:extract_to_arb --output-dir=l10n-arb lib/l10n/localization_intl.dart
+flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/l10n/localization_intl.dart l10n-arb/intl_*.arb
+</code></pre>
+<p>然后授予执行权限：</p>
+<pre><code class="language-shell">chmod +x intl.sh
+</code></pre>
+<p>执行intl.sh</p>
+<pre><code class="language-shell">./intl.sh
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter13/locallization_implement.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter13/faq.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter13/locallization_implement.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter13/faq.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
