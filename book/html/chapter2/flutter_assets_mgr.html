@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2.6：资源管理 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="26-资源管理"><a class="header" href="#26-资源管理">2.6 资源管理</a></h1>
+<p>Flutter APP 安装包中会包含代码和 assets（资源）两部分。Assets 是会打包到程序安装包中的，可在运行时访问。常见类型的 assets 包括静态数据（例如JSON文件）、配置文件、图标和图片等。</p>
+<h2 id="261-指定-assets"><a class="header" href="#261-指定-assets">2.6.1 指定 assets</a></h2>
+<p>和包管理一样，Flutter 也使用<a href="https://www.dartlang.org/tools/pub/pubspec"><code>pubspec.yaml</code></a>文件来管理应用程序所需的资源，举个例子:</p>
+<pre><code class="language-yaml">flutter:
+  assets:
+    - assets/my_icon.png
+    - assets/background.png
+</code></pre>
+<p><code>assets</code>指定应包含在应用程序中的文件， 每个 asset 都通过相对于<code>pubspec.yaml</code>文件所在的文件系统路径来标识自身的路径。asset 的声明顺序是无关紧要的，asset的实际目录可以是任意文件夹（在本示例中是assets 文件夹）。</p>
+<p>在构建期间，Flutter 将 asset 放置到称为 <em>asset bundle</em> 的特殊存档中，应用程序可以在运行时读取它们（但不能修改）。</p>
+<h2 id="262-asset-变体variant"><a class="header" href="#262-asset-变体variant">2.6.2 Asset 变体（variant）</a></h2>
+<p>构建过程支持“asset变体”的概念：不同版本的 asset 可能会显示在不同的上下文中。 在<code>pubspec.yaml</code>的assets 部分中指定 asset 路径时，构建过程中，会在相邻子目录中查找具有相同名称的任何文件。这些文件随后会与指定的 asset 一起被包含在 asset bundle 中。</p>
+<p>例如，如果应用程序目录中有以下文件:</p>
+<ul>
+<li>…/pubspec.yaml</li>
+<li>…/graphics/my_icon.png</li>
+<li>…/graphics/background.png</li>
+<li>…/graphics/dark/background.png</li>
+<li>….</li>
+</ul>
+<p>然后<code>pubspec.yaml</code>文件中只需包含:</p>
+<pre><code class="language-yaml">flutter:
+  assets:
+    - graphics/background.png
+</code></pre>
+<p>那么这两个<code>graphics/background.png</code>和<code>graphics/dark/background.png</code> 都将包含在您的 asset bundle中。前者被认为是_main asset_ （主资源），后者被认为是一种变体（variant）。</p>
+<p>在选择匹配当前设备分辨率的图片时，Flutter会使用到 asset 变体（见下文）。</p>
+<h2 id="263-加载-assets"><a class="header" href="#263-加载-assets">2.6.3 加载 assets</a></h2>
+<p>您的应用可以通过<a href="https://docs.flutter.io/flutter/services/AssetBundle-class.html"><code>AssetBundle</code></a>对象访问其 asset 。有两种主要方法允许从 Asset bundle 中加载字符串或图片（二进制）文件。</p>
+<h3 id="1-加载文本assets"><a class="header" href="#1-加载文本assets">1. 加载文本assets</a></h3>
+<ul>
+<li>通过<a href="https://docs.flutter.io/flutter/services/rootBundle.html"><code>rootBundle</code></a> 对象加载：每个Flutter应用程序都有一个<a href="https://docs.flutter.io/flutter/services/rootBundle.html"><code>rootBundle</code></a>对象， 通过它可以轻松访问主资源包，直接使用<code>package:flutter/services.dart</code>中全局静态的<code>rootBundle</code>对象来加载asset即可。</li>
+<li>通过 <a href="https://docs.flutter.io/flutter/widgets/DefaultAssetBundle-class.html"><code>DefaultAssetBundle</code></a> 加载：建议使用 <a href="https://docs.flutter.io/flutter/widgets/DefaultAssetBundle-class.html"><code>DefaultAssetBundle</code></a> 来获取当前 BuildContext 的AssetBundle。 这种方法不是使用应用程序构建的默认 asset bundle，而是使父级 widget 在运行时动态替换的不同的 AssetBundle，这对于本地化或测试场景很有用。</li>
+</ul>
+<p>通常，可以使用<code>DefaultAssetBundle.of()</code>在应用运行时来间接加载 asset（例如JSON文件），而在widget 上下文之外，或其他<code>AssetBundle</code>句柄不可用时，可以使用<code>rootBundle</code>直接加载这些 asset，例如：</p>
+<pre><code class="language-dart">import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+
+Future&lt;String&gt; loadAsset() async {
+  return await rootBundle.loadString('assets/config.json');
+}
+</code></pre>
+<h3 id="2-加载图片"><a class="header" href="#2-加载图片">2. 加载图片</a></h3>
+<p>类似于原生开发，Flutter也可以为当前设备加载适合其分辨率的图像。</p>
+<h4 id="1声明分辨率相关的图片-assets"><a class="header" href="#1声明分辨率相关的图片-assets">1）声明分辨率相关的图片 assets</a></h4>
+<p><a href="https://docs.flutter.io/flutter/painting/AssetImage-class.html"><code>AssetImage</code></a> 可以将asset的请求逻辑映射到最接近当前设备像素比例（dpi）的asset。为了使这种映射起作用，必须根据特定的目录结构来保存asset：</p>
+<ul>
+<li>…/image.png</li>
+<li>…/<strong>M</strong>x/image.png</li>
+<li>…/<strong>N</strong>x/image.png</li>
+<li>…</li>
+</ul>
+<p>其中 M 和 N 是数字标识符，对应于其中包含的图像的分辨率，也就是说，它们指定不同设备像素比例的图片。</p>
+<p>主资源默认对应于1.0倍的分辨率图片。看一个例子：</p>
+<ul>
+<li>…/my_icon.png</li>
+<li>…/2.0x/my_icon.png</li>
+<li>…/3.0x/my_icon.png</li>
+</ul>
+<p>在设备像素比率为1.8的设备上，<code>.../2.0x/my_icon.png</code> 将被选择。对于2.7的设备像素比率，<code>.../3.0x/my_icon.png</code>将被选择。</p>
+<p>如果未在<code>Image</code> widget上指定渲染图像的宽度和高度，那么<code>Image</code> widget将占用与主资源相同的屏幕空间大小。 也就是说，如果<code>.../my_icon.png</code>是72px乘72px，那么<code>.../3.0x/my_icon.png</code>应该是216px乘216px; 但如果未指定宽度和高度，它们都将渲染为72像素×72像素（以逻辑像素为单位）。</p>
+<p><code>pubspec.yaml</code>中asset部分中的每一项都应与实际文件相对应，但主资源项除外。当主资源缺少某个资源时，会按分辨率从低到高的顺序去选择 ，也就是说1x中没有的话会在2x中找，2x中还没有的话就在3x中找。</p>
+<h4 id="2加载图片"><a class="header" href="#2加载图片">2）加载图片</a></h4>
+<p>要加载图片，可以使用 <a href="https://docs.flutter.io/flutter/painting/AssetImage-class.html"><code>AssetImage</code></a>类。例如，我们可以从上面的asset声明中加载背景图片：</p>
+<pre><code class="language-dart">Widget build(BuildContext context) {
+  return DecoratedBox(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('graphics/background.png'),
+      ),
+    ),
+  );
+}
+</code></pre>
+<p>注意，<code>AssetImage</code> 并非是一个widget， 它实际上是一个<code>ImageProvider</code>，有些时候你可能期望直接得到一个显示图片的widget，那么你可以使用<code>Image.asset()</code>方法，如：</p>
+<pre><code class="language-dart">Widget build(BuildContext context) {
+  return Image.asset('graphics/background.png');
+}
+</code></pre>
+<p>使用默认的 asset bundle 加载资源时，内部会自动处理分辨率等，这些处理对开发者来说是无感知的。 (如果使用一些更低级别的类，如 <a href="https://docs.flutter.io/flutter/painting/ImageStream-class.html"><code>ImageStream</code></a>或 <a href="https://docs.flutter.io/flutter/painting/ImageCache-class.html"><code>ImageCache</code></a> 时你会注意到有与缩放相关的参数)</p>
+<h4 id="3依赖包中的资源图片"><a class="header" href="#3依赖包中的资源图片">3）依赖包中的资源图片</a></h4>
+<p>要加载依赖包中的图像，必须给<code>AssetImage</code>提供<code>package</code>参数。</p>
+<p>例如，假设您的应用程序依赖于一个名为“my_icons”的包，它具有如下目录结构：</p>
+<ul>
+<li>…/pubspec.yaml</li>
+<li>…/icons/heart.png</li>
+<li>…/icons/1.5x/heart.png</li>
+<li>…/icons/2.0x/heart.png</li>
+<li>…</li>
+</ul>
+<p>然后加载图像，使用:</p>
+<pre><code class="language-dart">AssetImage('icons/heart.png', package: 'my_icons')
+</code></pre>
+<p>或</p>
+<pre><code class="language-dart">Image.asset('icons/heart.png', package: 'my_icons')
+</code></pre>
+<blockquote>
+<p>注意：包在使用本身的资源时也应该加上<code>package</code>参数来获取。</p>
+</blockquote>
+<p><strong>打包包中的 assets</strong></p>
+<p>如果在<code>pubspec.yaml</code>文件中声明了期望的资源，它将会打包到相应的package中。特别是，包本身使用的资源必须在<code>pubspec.yaml</code>中指定。</p>
+<p>包也可以选择在其<code>lib/</code>文件夹中包含未在其<code>pubspec.yaml</code>文件中声明的资源。在这种情况下，对于要打包的图片，应用程序必须在<code>pubspec.yaml</code>中指定包含哪些图像。 例如，一个名为“fancy_backgrounds”的包，可能包含以下文件：</p>
+<ul>
+<li>…/lib/backgrounds/background1.png</li>
+<li>…/lib/backgrounds/background2.png</li>
+<li>…/lib/backgrounds/background3.png</li>
+</ul>
+<p>要包含第一张图像，必须在<code>pubspec.yaml</code>的assets部分中声明它：</p>
+<pre><code class="language-yaml">flutter:
+  assets:
+    - packages/fancy_backgrounds/backgrounds/background1.png
+</code></pre>
+<p><code>lib/</code>是隐含的，所以它不应该包含在资产路径中。</p>
+<h3 id="3-特定平台-assets"><a class="header" href="#3-特定平台-assets">3. 特定平台 assets</a></h3>
+<p>上面的资源都是flutter应用中的，这些资源只有在Flutter框架运行之后才能使用，如果要给我们的应用设置APP图标或者添加启动图，那我们必须使用特定平台的assets。</p>
+<h4 id="1设置app图标"><a class="header" href="#1设置app图标">1）设置APP图标</a></h4>
+<p>更新Flutter应用程序启动图标的方式与在本机Android或iOS应用程序中更新启动图标的方式相同。</p>
+<ul>
+<li>
+<p>Android</p>
+<p>在 Flutter 项目的根目录中，导航到<code>.../android/app/src/main/res</code>目录，里面包含了各种资源文件夹（如<code>mipmap-hdpi</code>已包含占位符图像 “ic_launcher.png”，见图2-15）。 只需按照<a href="https://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html#size">Android开发人员指南</a>中的说明， 将其替换为所需的资源，并遵守每种屏幕密度（dpi）的建议图标大小标准。</p>
+<p><img src="../imgs/2-15.png" alt="图2-15" /></p>
+<blockquote>
+<p><strong>注意:</strong> 如果您重命名.png文件，则还必须在您<code>AndroidManifest.xml</code>的<code>&lt;application&gt;</code>标签的<code>android:icon</code>属性中更新名称。</p>
+</blockquote>
+</li>
+<li>
+<p>iOS</p>
+<p>在Flutter项目的根目录中，导航到<code>.../ios/Runner</code>。该目录中<code>Assets.xcassets/AppIcon.appiconset</code>已经包含占位符图片（见图2-16）， 只需将它们替换为适当大小的图片，保留原始文件名称。</p>
+<p><img src="../imgs/2-16.png" alt="图2-16" /></p>
+</li>
+</ul>
+<h4 id="2更新启动页"><a class="header" href="#2更新启动页">2）更新启动页</a></h4>
+<p><img src="../imgs/2-17.png" alt="图2-17" /></p>
+<p>在 Flutter 框架加载时，Flutter 会使用本地平台机制绘制启动页。此启动页将持续到Flutter渲染应用程序的第一帧时。</p>
+<blockquote>
+<p><strong>注意:</strong> 这意味着如果您不在应用程序的<code>main()</code>方法中调用<a href="https://docs.flutter.io/flutter/widgets/runApp.html">runApp</a> 函数 （或者更具体地说，如果您不调用<a href="https://docs.flutter.io/flutter/dart-ui/Window/render.html"><code>window.render</code></a>去响应<a href="https://docs.flutter.io/flutter/dart-ui/Window/onDrawFrame.html"><code>window.onDrawFrame</code></a>）的话， 启动屏幕将永远持续显示。</p>
+</blockquote>
+<ul>
+<li>Android</li>
+</ul>
+<p>要将启动屏幕（splash screen）添加到您的Flutter应用程序， 请导航至<code>.../android/app/src/main</code>。在<code>res/drawable/launch_background.xml</code>，通过自定义drawable来实现自定义启动界面（你也可以直接换一张图片）。</p>
+<ul>
+<li>iOS</li>
+</ul>
+<p>要将图片添加到启动屏幕（splash screen）的中心，请导航至<code>.../ios/Runner</code>。在<code>Assets.xcassets/LaunchImage.imageset</code>， 拖入图片，并命名为<code>LaunchImage.png</code>、<code>LaunchImage@2x.png</code>、<code>LaunchImage@3x.png</code>。 如果你使用不同的文件名，那您还必须更新同一目录中的<code>Contents.json</code>文件，图片的具体尺寸可以查看苹果官方的标准。</p>
+<p>您也可以通过打开Xcode完全自定义storyboard。在Project Navigator中导航到<code>Runner/Runner</code>然后通过打开<code>Assets.xcassets</code>拖入图片，或者通过在LaunchScreen.storyboard中使用Interface Builder进行自定义，如图2-18所示。</p>
+<p><img src="../imgs/2-18.png" alt="图2-18" /></p>
+<h2 id="264-平台共享-assets"><a class="header" href="#264-平台共享-assets">2.6.4 平台共享 assets</a></h2>
+<p>如果我们采用的是Flutter+原生的开发模式，那么可能会存Flutter和原生需要共享资源的情况，比如Flutter项目中已经有了一张图片A，如果原生代码中也要使用A，我们可以将A拷贝一份到原生项目的特定目录，这样的话虽然功能可以实现，但是最终的应用程序包会变大，因为包含了重复的资源，为了解决这个问题，Flutter 提供了一种Flutter和原生之间共享资源的方式，由于实现上需要涉及平台相关的原生代码，故本书不做展开，读者有需要可以自行查阅<a href="https://flutter.cn/docs/development/ui/assets-and-images#sharing-assets-with-the-underlying-platform">官方文档</a>。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter2/flutter_package_mgr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter2/flutter_app_debug.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter2/flutter_package_mgr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter2/flutter_app_debug.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

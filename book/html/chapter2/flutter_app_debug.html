@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2.7：调试Flutter应用 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="27-调试flutter应用"><a class="header" href="#27-调试flutter应用">2.7 调试Flutter应用</a></h1>
+<p>有各种各样的工具和功能来帮助调试Flutter应用程序。</p>
+<h2 id="271-日志与断点"><a class="header" href="#271-日志与断点">2.7.1 日志与断点</a></h2>
+<h3 id="1-debugger-声明"><a class="header" href="#1-debugger-声明">1. <code>debugger()</code> 声明</a></h3>
+<p>当使用Dart Observatory（或另一个Dart调试器，例如IntelliJ IDE中的调试器）时，可以使用该<code>debugger()</code>语句插入编程式断点。要使用这个，你必须添加<code>import 'dart:developer';</code>到相关文件顶部。</p>
+<p><code>debugger()</code>语句采用一个可选<code>when</code>参数，我们可以指定该参数仅在特定条件为真时中断，如下所示：</p>
+<pre><code class="language-dart">void someFunction(double offset) {
+  debugger(when: offset &gt; 30.0);
+  // ...
+}
+</code></pre>
+<h3 id="2-printdebugprintflutter-logs"><a class="header" href="#2-printdebugprintflutter-logs">2. <code>print</code>、<code>debugPrint</code>、<code>flutter logs</code></a></h3>
+<p>Dart <code>print()</code>功能将输出到系统控制台，我们可以使用<code>flutter logs</code>来查看它（基本上是一个包装<code>adb logcat</code>）。</p>
+<p>如果你一次输出太多，那么Android有时会丢弃一些日志行。为了避免这种情况，我们可以使用Flutter的<code>foundation</code>库中的<a href="https://docs.flutter.io/flutter/foundation/debugPrint.html"><code>debugPrint()</code></a> ，它封装了 print，将一次输出的内容长度限制在一个级别（内容过多时会分批输出），避免被Android内核丢弃。</p>
+<p>Flutter框架中的许多类都有<code>toString</code>实现，按照惯例，输出信息通过包括对象的运行时类型 、类名以及关键字段等信息。 树中的一些类也具有<code>toStringDeep</code>实现，从该点返回整个子树的多行描述。一些具有详细信息<code>toString</code>的类会实现一个<code>toStringShort</code>，它只返回对象的类型或其他非常简短的（一个或两个单词）描述。</p>
+<h3 id="3-调试模式断言"><a class="header" href="#3-调试模式断言">3. 调试模式断言</a></h3>
+<p>在Flutter应用调试过程中，Dart <code>assert</code>语句被启用，并且 Flutter 框架使用它来执行许多运行时检查来验证是否违反一些不可变的规则。当一个某个规则被违反时，就会在控制台打印错误日志，并带上一些上下文信息来帮助追踪问题的根源。</p>
+<p>要关闭调试模式并使用发布模式，请使用<code>flutter run --release</code>运行我们的应用程序。 这也关闭了Observatory调试器。一个中间模式可以关闭除Observatory之外所有调试辅助工具的，称为“profile mode”，用<code>--profile</code>替代<code>--release</code>即可。</p>
+<h3 id="4-断点"><a class="header" href="#4-断点">4. 断点</a></h3>
+<p>开发过程中，断点是最实用的调试工具之一，我们以 Android Studio 为例，如图2-19：</p>
+<p><img src="../imgs/2-19.png" alt="2-19" /></p>
+<p>我们在 93 行打了一个断点，一旦代码执行到这一行就会暂停，这时我们可以看到当前上下文所有变量的值，然后可以选择一步一步的执行代码。关于如何通过 IDE 来打断点，网上教程很多，读者可以自行搜索。</p>
+<h2 id="272-调试应用程序层"><a class="header" href="#272-调试应用程序层">2.7.2 调试应用程序层</a></h2>
+<p>Flutter框架的每一层都提供了将其当前状态或事件转储(dump)到控制台（使用<code>debugPrint</code>）的功能。</p>
+<h3 id="1-widget-树"><a class="header" href="#1-widget-树">1. Widget 树</a></h3>
+<p>要转储Widgets树的状态，请调用<a href="https://docs.flutter.io/flutter/widgets/debugDumpApp.html"><code>debugDumpApp()</code></a>。 只要应用程序已经构建了至少一次（即在调用<code>build()</code>之后的任何时间），我们可以在应用程序未处于构建阶段（即，不在<code>build()</code>方法内调用 ）的任何时间调用此方法（在调用<code>runApp()</code>之后）。</p>
+<p>如, 这个应用程序:</p>
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: AppHome(),
+    ),
+  );
+}
+
+class AppHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Center(
+        child: TextButton(
+          onPressed: () {
+            debugDumpApp();
+          },
+          child: Text('Dump App'),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>…会输出这样的内容（精确的细节会根据框架的版本、设备的大小等等而变化）：</p>
+<pre><code class="language-shell">I/flutter ( 6559): WidgetsFlutterBinding - CHECKED MODE
+I/flutter ( 6559): RenderObjectToWidgetAdapter&lt;RenderBox&gt;([GlobalObjectKey RenderView(497039273)]; renderObject: RenderView)
+I/flutter ( 6559): └MaterialApp(state: _MaterialAppState(1009803148))
+I/flutter ( 6559):  └ScrollConfiguration()
+I/flutter ( 6559):   └AnimatedTheme(duration: 200ms; state: _AnimatedThemeState(543295893; ticker inactive; ThemeDataTween(ThemeData(Brightness.light Color(0xff2196f3) etc...) → null)))
+I/flutter ( 6559):    └Theme(ThemeData(Brightness.light Color(0xff2196f3) etc...))
+I/flutter ( 6559):     └WidgetsApp([GlobalObjectKey _MaterialAppState(1009803148)]; state: _WidgetsAppState(552902158))
+I/flutter ( 6559):      └CheckedModeBanner()
+I/flutter ( 6559):       └Banner()
+I/flutter ( 6559):        └CustomPaint(renderObject: RenderCustomPaint)
+I/flutter ( 6559):         └DefaultTextStyle(inherit: true; color: Color(0xd0ff0000); family: "monospace"; size: 48.0; weight: 900; decoration: double Color(0xffffff00) TextDecoration.underline)
+I/flutter ( 6559):          └MediaQuery(MediaQueryData(size: Size(411.4, 683.4), devicePixelRatio: 2.625, textScaleFactor: 1.0, padding: EdgeInsets(0.0, 24.0, 0.0, 0.0)))
+I/flutter ( 6559):           └LocaleQuery(null)
+I/flutter ( 6559):            └Title(color: Color(0xff2196f3))
+... #省略剩余内容
+</code></pre>
+<p>这是一个“扁平化”的树，显示了通过各种构建函数投影的所有widget（如果你在widget树的根中调用<code>toStringDeepwidget</code>，这是你获得的树）。 你会看到很多在你的应用源代码中没有出现的widget，因为它们是被框架中widget的<code>build()</code>函数插入的。例如，<a href="https://docs.flutter.io/flutter/material/InkFeature-class.html"><code>InkFeature</code></a>是Material widget的一个实现细节 。</p>
+<p>当按钮从被按下变为被释放时debugDumpApp()被调用，TextButton对象同时调用<code>setState()</code>，并将自己标记为"dirty"。我们还可以查看已注册了哪些手势监听器; 在这种情况下，一个单一的GestureDetector被列出，并且监听“tap”手势（“tap”是<code>TapGestureDetector</code>的<code>toStringShort</code>函数输出的）。</p>
+<p>如果我们编写自己的widget，则可以通过覆盖<a href="https://docs.flutter.io/flutter/widgets/Widget/debugFillProperties.html"><code>debugFillProperties()</code></a>来添加信息。 将<a href="https://docs.flutter.io/flutter/foundation/DiagnosticsProperty-class.html">DiagnosticsProperty</a>对象作为方法参数，并调用父类方法。 该函数是该<code>toString</code>方法用来填充小部件描述信息的。</p>
+<h3 id="2-渲染树"><a class="header" href="#2-渲染树">2. 渲染树</a></h3>
+<p>如果我们尝试调试布局问题，那么Widget树可能不够详细。在这种情况下，我们可以通过调用<code>debugDumpRenderTree()</code>转储渲染树。 正如<code>debugDumpApp()</code>，除布局或绘制阶段外，我们可以随时调用此函数。作为一般规则，从<a href="https://docs.flutter.io/flutter/scheduler/SchedulerBinding/addPersistentFrameCallback.html">frame 回调</a> 或事件处理器中调用它是最佳解决方案。</p>
+<p>要调用<code>debugDumpRenderTree()</code>，我们需要添加<code>import'package:flutter/rendering.dart';</code>到我们的源文件。</p>
+<p>上面这个小例子的输出结果如下所示：</p>
+<pre><code class="language-shell">I/flutter ( 6559): RenderView
+I/flutter ( 6559):  │ debug mode enabled - android
+I/flutter ( 6559):  │ window size: Size(1080.0, 1794.0) (in physical pixels)
+I/flutter ( 6559):  │ device pixel ratio: 2.625 (physical pixels per logical pixel)
+I/flutter ( 6559):  │ configuration: Size(411.4, 683.4) at 2.625x (in logical pixels)
+I/flutter ( 6559):  │
+I/flutter ( 6559):  └─child: RenderCustomPaint
+I/flutter ( 6559):    │ creator: CustomPaint ← Banner ← CheckedModeBanner ←
+I/flutter ( 6559):    │   WidgetsApp-[GlobalObjectKey _MaterialAppState(1009803148)] ←
+I/flutter ( 6559):    │   Theme ← AnimatedTheme ← ScrollConfiguration ← MaterialApp ←
+I/flutter ( 6559):    │   [root]
+I/flutter ( 6559):    │ parentData: &lt;none&gt;
+I/flutter ( 6559):    │ constraints: BoxConstraints(w=411.4, h=683.4)
+I/flutter ( 6559):    │ size: Size(411.4, 683.4)
+... # 省略
+</code></pre>
+<p>这是根<code>RenderObject</code>对象的<code>toStringDeep</code>函数的输出。</p>
+<p>当调试布局问题时，关键要看的是<code>size</code>和<code>constraints</code>字段。约束沿着树向下传递，尺寸向上传递。</p>
+<p>如果我们编写自己的渲染对象，则可以通过覆盖<a href="https://docs.flutter.io/flutter/rendering/Layer/debugFillProperties.html"><code>debugFillProperties()</code></a>将信息添加到转储。 将<a href="https://docs.flutter.io/flutter/foundation/DiagnosticsProperty-class.html">DiagnosticsProperty</a>对象作为方法的参数，并调用父类方法。</p>
+<h3 id="3-layer树"><a class="header" href="#3-layer树">3. Layer树</a></h3>
+<p>读者可以理解为渲染树是可以分层的，而最终绘制需要将不同的层合成起来，而Layer则是绘制时需要合成的层，如果我们尝试调试合成问题，则可以使用<a href="https://docs.flutter.io/flutter/rendering/debugDumpLayerTree.html"><code>debugDumpLayerTree()</code></a>。对于上面的例子，它会输出：</p>
+<pre><code>I/flutter : TransformLayer
+I/flutter :  │ creator: [root]
+I/flutter :  │ offset: Offset(0.0, 0.0)
+I/flutter :  │ transform:
+I/flutter :  │   [0] 3.5,0.0,0.0,0.0
+I/flutter :  │   [1] 0.0,3.5,0.0,0.0
+I/flutter :  │   [2] 0.0,0.0,1.0,0.0
+I/flutter :  │   [3] 0.0,0.0,0.0,1.0
+I/flutter :  │
+I/flutter :  ├─child 1: OffsetLayer
+I/flutter :  │ │ creator: RepaintBoundary ← _FocusScope ← Semantics ← Focus-[GlobalObjectKey MaterialPageRoute(560156430)] ← _ModalScope-[GlobalKey 328026813] ← _OverlayEntry-[GlobalKey 388965355] ← Stack ← Overlay-[GlobalKey 625702218] ← Navigator-[GlobalObjectKey _MaterialAppState(859106034)] ← Title ← ⋯
+I/flutter :  │ │ offset: Offset(0.0, 0.0)
+I/flutter :  │ │
+I/flutter :  │ └─child 1: PictureLayer
+I/flutter :  │
+I/flutter :  └─child 2: PictureLayer
+</code></pre>
+<p>这是根<code>Layer</code>的<code>toStringDeep</code>输出的。</p>
+<p>根部的变换是应用设备像素比的变换; 在这种情况下，每个逻辑像素代表3.5个设备像素。</p>
+<p><code>RepaintBoundary</code> widget在渲染树的层中创建了一个<code>RenderRepaintBoundary</code>。这用于减少需要重绘的需求量。</p>
+<h3 id="4-语义"><a class="header" href="#4-语义">4. 语义</a></h3>
+<p>我们还可以调用<a href="https://docs.flutter.io/flutter/rendering/debugDumpSemanticsTree.html"><code>debugDumpSemanticsTree()</code></a>获取语义树（呈现给系统可访问性API的树）的转储。 要使用此功能，必须首先启用辅助功能，例如启用系统辅助工具或<code>SemanticsDebugger</code> （下面讨论）。</p>
+<p>对于上面的例子，它会输出:</p>
+<pre><code>I/flutter : SemanticsNode(0; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :  ├SemanticsNode(1; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :  │ └SemanticsNode(2; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4); canBeTapped)
+I/flutter :  └SemanticsNode(3; Rect.fromLTRB(0.0, 0.0, 411.4, 683.4))
+I/flutter :    └SemanticsNode(4; Rect.fromLTRB(0.0, 0.0, 82.0, 36.0); canBeTapped; "Dump App")
+</code></pre>
+<h3 id="5-调度"><a class="header" href="#5-调度">5. 调度</a></h3>
+<p>要找出相对于帧的开始/结束事件发生的位置，可以切换<a href="https://docs.flutter.io/flutter/scheduler/debugPrintBeginFrameBanner.html"><code>debugPrintBeginFrameBanner</code></a>和<a href="https://docs.flutter.io/flutter/scheduler/debugPrintEndFrameBanner.html"><code>debugPrintEndFrameBanner</code></a>布尔值以将帧的开始和结束打印到控制台。</p>
+<p>例如:</p>
+<pre><code>I/flutter : ▄▄▄▄▄▄▄▄ Frame 12         30s 437.086ms ▄▄▄▄▄▄▄▄
+I/flutter : Debug print: Am I performing this work more than once per frame?
+I/flutter : Debug print: Am I performing this work more than once per frame?
+I/flutter : ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+</code></pre>
+<p><a href="https://docs.flutter.io/flutter/scheduler/debugPrintScheduleFrameStacks.html"><code>debugPrintScheduleFrameStacks</code></a>还可以用来打印导致当前帧被调度的调用堆栈。</p>
+<h3 id="6-可视化调试"><a class="header" href="#6-可视化调试">6. 可视化调试</a></h3>
+<p>我们也可以通过设置<code>debugPaintSizeEnabled</code>为<code>true</code>以可视方式调试布局问题。 这是来自<code>rendering</code>库的布尔值。它可以在任何时候启用，并在为true时影响绘制。 设置它的最简单方法是在<code>void main()</code>的顶部设置。</p>
+<p>当它被启用时，所有的盒子都会得到一个明亮的深青色边框，padding（来自widget如Padding）显示为浅蓝色，子widget周围有一个深蓝色框， 对齐方式（来自widget如Center和Align）显示为黄色箭头. 空白（如没有任何子节点的Container）以灰色显示。</p>
+<p><a href="https://docs.flutter.io/flutter/rendering/debugPaintBaselinesEnabled.html"><code>debugPaintBaselinesEnabled</code></a>做了类似的事情，但对于具有基线的对象，文字基线以绿色显示，表意(ideographic)基线以橙色显示。</p>
+<p><a href="https://docs.flutter.io/flutter/rendering/debugPaintPointersEnabled.html"><code>debugPaintPointersEnabled</code></a>标志打开一个特殊模式，任何正在点击的对象都会以深青色突出显示。 这可以帮助我们确定某个对象是否以某种不正确的方式进行hit测试（Flutter检测点击的位置是否有能响应用户操作的widget）,例如，如果它实际上超出了其父项的范围，首先不会考虑通过hit测试。</p>
+<p>如果我们尝试调试合成图层，例如以确定是否以及在何处添加<code>RepaintBoundary</code> widget，则可以使用<a href="https://docs.flutter.io/flutter/rendering/debugPaintLayerBordersEnabled.html"><code>debugPaintLayerBordersEnabled</code></a> 标志， 该标志用橙色或轮廓线标出每个层的边界，或者使用<a href="https://docs.flutter.io/flutter/rendering/debugRepaintRainbowEnabled.html"><code>debugRepaintRainbowEnabled</code></a>标志， 只要他们重绘时，这会使该层被一组旋转色所覆盖。</p>
+<p>所有这些标志只能在调试模式下工作。通常，Flutter框架中以“<code>debug...</code>” 开头的任何内容都只能在调试模式下工作。</p>
+<h3 id="7-调试动画"><a class="header" href="#7-调试动画">7. 调试动画</a></h3>
+<p>调试动画最简单的方法是减慢它们的速度。为此，请将<a href="https://docs.flutter.io/flutter/scheduler/timeDilation.html"><code>timeDilation</code></a>变量（在scheduler库中）设置为大于1.0的数字，例如50.0。 最好在应用程序启动时只设置一次。如果我们在运行中更改它，尤其是在动画运行时将其值改小，则在观察时可能会出现倒退，这可能会导致断言命中，并且这通常会干扰我们的开发工作。</p>
+<h3 id="8-调试性能问题"><a class="header" href="#8-调试性能问题">8. 调试性能问题</a></h3>
+<p>要了解我们的应用程序导致重新布局或重新绘制的原因，我们可以分别设置<a href="https://docs.flutter.io/flutter/rendering/debugPrintMarkNeedsLayoutStacks.html"><code>debugPrintMarkNeedsLayoutStacks</code></a>和 <a href="https://docs.flutter.io/flutter/rendering/debugPrintMarkNeedsPaintStacks.html"><code>debugPrintMarkNeedsPaintStacks</code></a>标志。 每当渲染盒被要求重新布局和重新绘制时，这些都会将堆栈跟踪记录到控制台。如果这种方法对我们有用，我们可以使用<code>services</code>库中的<code>debugPrintStack()</code>方法按需打印堆栈痕迹。</p>
+<h3 id="9-统计应用启动时间"><a class="header" href="#9-统计应用启动时间">9. 统计应用启动时间</a></h3>
+<p>要收集有关Flutter应用程序启动所需时间的详细信息，可以在运行<code>flutter run</code>时使用<code>trace-startup</code>和<code>profile</code>选项。</p>
+<pre><code class="language-shell">$ flutter run --trace-startup --profile
+</code></pre>
+<p>跟踪输出保存为<code>start_up_info.json</code>，在Flutter工程目录在build目录下。输出列出了从应用程序启动到这些跟踪事件（以微秒捕获）所用的时间：</p>
+<ul>
+<li>进入Flutter引擎时.</li>
+<li>展示应用第一帧时.</li>
+<li>初始化Flutter框架时.</li>
+<li>完成Flutter框架初始化时.</li>
+</ul>
+<p>如 :</p>
+<pre><code class="language-json">{
+  "engineEnterTimestampMicros": 96025565262,
+  "timeToFirstFrameMicros": 2171978,
+  "timeToFrameworkInitMicros": 514585,
+  "timeAfterFrameworkInitMicros": 1657393
+}
+</code></pre>
+<h3 id="10-跟踪dart代码性能"><a class="header" href="#10-跟踪dart代码性能">10. 跟踪Dart代码性能</a></h3>
+<p>要执行自定义性能跟踪和测量Dart任意代码段的wall/CPU时间（类似于在Android上使用<a href="https://developer.android.com/studio/profile/systrace.html">systrace</a>）。 使用<code>dart:developer</code>的<a href="https://api.dartlang.org/stable/dart-developer/Timeline-class.html">Timeline</a>工具来包含你想测试的代码块，例如：</p>
+<pre><code class="language-dart">Timeline.startSync('interesting function');
+// iWonderHowLongThisTakes();
+Timeline.finishSync();
+</code></pre>
+<p>然后打开你应用程序的Observatory timeline页面，在“Recorded Streams”中选择‘Dart’复选框，并执行你想测量的功能。</p>
+<p>刷新页面将在Chrome的<a href="https://www.chromium.org/developers/how-tos/trace-event-profiling-tool">跟踪工具</a>中显示应用按时间顺序排列的timeline记录。</p>
+<p>请确保运行<code>flutter run</code>时带有<code>--profile</code>标志，以确保运行时性能特征与我们的最终产品差异最小。</p>
+<h2 id="273-devtools"><a class="header" href="#273-devtools">2.7.3 DevTools</a></h2>
+<p>Flutter DevTools 是 Flutter 可视化调试工具，如图2-20。它将各种调试工具和能力集成在一起，并提供可视化调试界面，它的功能很强大，掌握它会对我们开发和优化 Flutter 应用有很大帮助。由于 Flutter DevTools 功能很多，短篇幅是讲不完的，本书不做专门介绍，Flutter 官网对 DevTools 有详细的介绍，读者可以去官网查看相关教程。</p>
+<p><img src="../imgs/2-20.png" alt="2-20" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter2/flutter_assets_mgr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter2/thread_model_and_error_report.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter2/flutter_assets_mgr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter2/thread_model_and_error_report.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>13.1：让App支持多语言 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="131-让app支持多语言"><a class="header" href="#131-让app支持多语言">13.1 让App支持多语言</a></h1>
+<h2 id="1311-简介"><a class="header" href="#1311-简介">13.1.1 简介</a></h2>
+<p>如果我们的应用要支持多种语言，那么我们需要“国际化”它。这意味着我们在开发时需要为应用程序支持的每种语言环境设置“本地化”的一些值，如文本和布局。Flutter SDK已经提供了一些组件和类来帮助我们实现国际化，下面我们来介绍一下Flutter中实现国际化的步骤。</p>
+<p>接下来我们以<code>MaterialApp</code>类为入口的应用来说明如何支持国际化。</p>
+<blockquote>
+<p>大多数应用程序都是通过<code>MaterialApp</code>为入口，但根据低级别的<code>WidgetsApp</code>类为入口编写的应用程序也可以使用相同的类和逻辑进行国际化。<code>MaterialApp</code>实际上也是<code>WidgetsApp</code>的一个包装。</p>
+</blockquote>
+<p>注意，“本地化的值和资源”是指我们针对不同语言准备的不同资源，这些资源一般是指文案（字符串），当然也会有一些其他的资源会根据不同语言地区而不同，比如我们需要显示一个APP上架地的国旗图片，那么不同Locale区域我们就需要提供不同的国旗图片。</p>
+<h2 id="1312-支持国际化"><a class="header" href="#1312-支持国际化">13.1.2 支持国际化</a></h2>
+<p>默认情况下，Flutter SDK中的组件仅提供美国英语本地化资源（主要是文本）。要添加对其他语言的支持，应用程序须添加一个名为“flutter_localizations”的包依赖，然后还需要在<code>MaterialApp</code>中进行一些配置。 要使用<code>flutter_localizations</code>包，首先需要添加依赖到<code>pubspec.yaml</code>文件中：</p>
+<pre><code class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+</code></pre>
+<p>接下来，下载<code>flutter_localizations</code>库，然后指定<code>MaterialApp</code>的<code>localizationsDelegates</code>和<code>supportedLocales</code>：</p>
+<pre><code class="language-dart">import 'package:flutter_localizations/flutter_localizations.dart';
+
+MaterialApp(
+ localizationsDelegates: [
+   // 本地化的代理类
+   GlobalMaterialLocalizations.delegate,
+   GlobalWidgetsLocalizations.delegate,
+ ],
+ supportedLocales: [
+    const Locale('en', 'US'), // 美国英语
+    const Locale('zh', 'CN'), // 中文简体
+    //其他Locales
+  ],
+  // ...
+)
+</code></pre>
+<blockquote>
+<p>与<code>MaterialApp</code>类为入口的应用不同, 对基于<code>WidgetsApp</code>类为入口的应用程序进行国际化时,不需要<code>GlobalMaterialLocalizations.delegate</code>。</p>
+</blockquote>
+<p><code>localizationsDelegates</code>列表中的元素是生成本地化值集合的工厂类。<code>GlobalMaterialLocalizations.delegate</code> 为Material 组件库提供的本地化的字符串和其他值，它可以使Material 组件支持多语言。 <code>GlobalWidgetsLocalizations.delegate</code>定义组件默认的文本方向，从左到右或从右到左，这是因为有些语言的阅读习惯并不是从左到右，比如如阿拉伯语就是从右向左的。</p>
+<p><code>supportedLocales</code>也接收一个Locale数组，表示我们的应用支持的语言列表，在本例中我们的应用只支持美国英语和中文简体两种语言。</p>
+<h2 id="1313-获取当前区域locale"><a class="header" href="#1313-获取当前区域locale">13.1.3 获取当前区域Locale</a></h2>
+<p><a href="https://docs.flutter.io/flutter/dart-ui/Locale-class.html"><code>Locale</code></a>类是用来标识用户的语言环境的，它包括语言和国家两个标志如：</p>
+<pre><code class="language-dart">const Locale('zh', 'CN') // 中文简体
+</code></pre>
+<p>我们始终可以通过以下方式来获取应用的当前区域Locale：</p>
+<pre><code class="language-dart">Locale myLocale = Localizations.localeOf(context);
+</code></pre>
+<p><a href="https://docs.flutter.io/flutter/widgets/Localizations-class.html"><code>Localizations</code></a> 组件一般位于widget树中其他业务组件的顶部，它的作用是定义区域Locale以及设置子树依赖的本地化资源。 如果系统的语言环境发生变化，则会使用对应语言的本地化资源。</p>
+<h2 id="1314-监听系统语言切换"><a class="header" href="#1314-监听系统语言切换">13.1.4 监听系统语言切换</a></h2>
+<p>当我们更改系统语言设置时，APP中的Localizations组件会重新构建，<code>Localizations.localeOf(context)</code> 获取的Locale就会更新，最终界面会重新build达到切换语言的效果。但是这个过程是隐式完成的，我们并没有主动去监听系统语言切换，但是有时我们需要在系统语言发生改变时做一些事，比如系统语言切换为一种我们APP不支持的语言时，我们需要设置一个默认的语言，这时我们就需要监听locale改变事件。</p>
+<p>我们可以通过<code>localeResolutionCallback</code>或<code>localeListResolutionCallback</code>回调来监听locale改变的事件，我们先看看<code>localeResolutionCallback</code>的回调函数签名：</p>
+<pre><code class="language-dart">Locale Function(Locale locale, Iterable&lt;Locale&gt; supportedLocales)
+</code></pre>
+<ul>
+<li>
+<p>参数<code>locale</code>的值为当前的当前的系统语言设置，当应用启动时或用户动态改变系统语言设置时此locale即为系统的当前locale。当开发者手动指定APP的locale时，那么此locale参数代表开发者指定的locale，此时将忽略系统locale如：</p>
+<pre><code class="language-dart">MaterialApp(
+ ...
+ locale: const Locale('en', 'US'), //手动指定locale
+ ...
+)
+</code></pre>
+<p>上面的例子中手动指定了应用locale为美国英语，指定后即使设备当前语言是中文简体，应用中的locale也依然是美国英语。如果<code>locale</code>为<code>null</code>，则表示Flutter未能获取到设备的Locale信息，所以我们在使用<code>locale</code>之前一定要先判空。</p>
+</li>
+<li>
+<p><code>supportedLocales</code> 为当前应用支持的locale列表，是开发者在MaterialApp中通过<code>supportedLocales</code>属性注册的。</p>
+</li>
+<li>
+<p>返回值是一个<code>Locale</code>，此<code>Locale</code>为Flutter APP最终使用的<code>Locale</code>。通常在不支持的语言区域时返回一个默认的<code>Locale</code>。</p>
+</li>
+</ul>
+<p><code>localeListResolutionCallback</code>和<code>localeResolutionCallback</code>唯一的不同就在第一个参数类型，前者接收的是一个<code>Locale</code>列表，而后者接收的是单个<code>Locale</code>。</p>
+<pre><code class="language-dart">Locale Function(List&lt;Locale&gt; locales, Iterable&lt;Locale&gt; supportedLocales)
+</code></pre>
+<p>在较新的Android系统中，用户可以设置一个语言列表，这样一来，支持多语言的应用就会得到这个列表，应用通常的处理方式就是按照列表的顺序依次尝试加载相应的Locale，如果某一种语言加载成功则会停止。图13-1是Android系统中设置语言列表的截图：</p>
+<p><img src="../imgs/13-1.jpeg" alt="设置语言列表" /></p>
+<p>在Flutter中，应该优先使用<code>localeListResolutionCallback</code>，当然你不必担心Android系统的差异性，如果在低版本的Android系统中，Flutter会自动处理这种情况，这时Locale列表只会包含一项。</p>
+<h2 id="1315-localization-组件"><a class="header" href="#1315-localization-组件">13.1.5 Localization 组件</a></h2>
+<p>Localizations组件用于加载和查找应用当前语言下的本地化值或资源。应用程序通过<a href="https://docs.flutter.io/flutter/widgets/Localizations/of.html"><code>Localizations.of(context,type)</code></a>来引用这些对象。 如果设备的Locale区域设置发生更改，则Localizations 组件会自动加载新区域的Locale值，然后重新build使用（依赖）了它们的组件，之所以会这样，是因为<code>Localizations</code>内部使用了<a href="https://book.flutterchina.club/chapter7/inherited_widget.html">InheritedWidget</a> ，我们在介绍该组件时讲过：当子组件的<code>build</code>函数引用了<code>InheritedWidget</code>时，会创建对<code>InheritedWidget</code>的隐式依赖关系。因此，当<code>InheritedWidget</code>发生更改时，即<code>Localizations</code>的Locale设置发生更改时，将重建所有依赖它的子组件。</p>
+<p>本地化值由<code>Localizations</code>的 <a href="https://docs.flutter.io/flutter/widgets/LocalizationsDelegate-class.html">LocalizationsDelegates</a> 列表加载 。 <strong>每个委托必须定义一个异步load() 方法</strong>，以生成封装了一系列本地化值的对象。通常这些对象为每个本地化值定义一个方法。</p>
+<p>在大型应用程序中，不同模块或Package可能会与自己的本地化值捆绑在一起。 这就是为什么要用<code>Localizations</code> 管理对象表的原因。 要使用由<code>LocalizationsDelegate </code>的<code>load</code>方法之一产生的对象，可以指定一个<code>BuildContext</code>和对象的类型来找到它。例如，Material 组件库的本地化字符串由<a href="https://docs.flutter.io/flutter/material/MaterialLocalizations-class.html">MaterialLocalizations</a>类定义，此类的实例由<a href="https://docs.flutter.io/flutter/material/MaterialApp-class.html">MaterialApp</a>类提供的<code>LocalizationDelegate</code>创建， 它们可以如下方式获取到：</p>
+<pre><code class="language-dart">Localizations.of&lt;MaterialLocalizations&gt;(context, MaterialLocalizations);
+</code></pre>
+<p>这个特殊的<code>Localizations.of()</code>表达式会经常使用，所以MaterialLocalizations类提供了一个便捷方法：</p>
+<pre><code class="language-dart">static MaterialLocalizations of(BuildContext context) {
+  return Localizations.of&lt;MaterialLocalizations&gt;(context, MaterialLocalizations);
+}
+
+// 可以直接调用便捷方法
+tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+</code></pre>
+<h2 id="1316-使用打包好的localizationsdelegates"><a class="header" href="#1316-使用打包好的localizationsdelegates">13.1.6 使用打包好的LocalizationsDelegates</a></h2>
+<p>为了尽可能小而且简单，flutter软件包中仅提供美国英语值的<code>MaterialLocalizations</code>和<code>WidgetsLocalizations</code>接口的实现。 这些实现类分别称为<code>DefaultMaterialLocalizations</code>和<code>DefaultWidgetsLocalizations</code>。flutter_localizations 包包含<code>GlobalMaterialLocalizations</code>和<code>GlobalWidgetsLocalizations</code>的本地化接口的多语言实现， 国际化的应用程序必须按照本节开头说明的那样为这些类指定本地化的代理类。</p>
+<p>上述的<code>GlobalMaterialLocalizations</code>和<code>GlobalWidgetsLocalizations</code>只是Material组件库的本地化实现，如果我们要让自己的布局支持多语言，那么就需要实现在即的<code>Localizations</code>，我们将在下一节介绍其具体的实现方式。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter13/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter13/locallization_implement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter13/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter13/locallization_implement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

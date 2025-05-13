@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>5.7：页面骨架（Scaffold） - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="57-页面骨架scaffold"><a class="header" href="#57-页面骨架scaffold">5.7 页面骨架（Scaffold）</a></h1>
+<p>Material 组件库提供了丰富多样的组件，本节介绍一下最常用的 Scaffold 组件，其余的读者可以自行查看文档或 Flutter Gallery 中 Material 组件部分的示例。</p>
+<blockquote>
+<p>注意：Flutter Gallery是Flutter官方提供的Flutter Demo，源码位于flutter源码中的examples目录下，笔者强烈建议用户将Flutter Gallery示例跑起来，它是一个很全面的Flutter示例应用，是非常好的参考Demo，也是笔者学习Flutter的第一手资料。</p>
+</blockquote>
+<h2 id="571-scaffold"><a class="header" href="#571-scaffold">5.7.1 Scaffold</a></h2>
+<p>一个完整的路由页可能会包含导航栏、抽屉菜单(Drawer)以及底部 Tab 导航菜单等。如果每个路由页面都需要开发者自己手动去实现这些，这会是一件非常麻烦且无聊的事。幸运的是，Flutter Material 组件库提供了一些现成的组件来减少我们的开发任务。<code>Scaffold</code> 是一个路由页的骨架，我们使用它可以很容易地拼装出一个完整的页面。</p>
+<h3 id="实例"><a class="header" href="#实例">实例</a></h3>
+<p>我们实现一个页面，它包含：</p>
+<ol>
+<li>一个导航栏</li>
+<li>导航栏右边有一个分享按钮</li>
+<li>有一个抽屉菜单</li>
+<li>有一个底部导航</li>
+<li>右下角有一个悬浮的动作按钮</li>
+</ol>
+<p>最终效果如图5-18、图5-19所示：</p>
+<p><img src="../imgs/5-18.png" alt="图5-18" /> <img src="../imgs/5-19.png" alt="图5-19" /></p>
+<p>实现代码如下：</p>
+<pre><code class="language-dart">class ScaffoldRoute extends StatefulWidget {
+  @override
+  _ScaffoldRouteState createState() =&gt; _ScaffoldRouteState();
+}
+
+class _ScaffoldRouteState extends State&lt;ScaffoldRoute&gt; {
+  int _selectedIndex = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar( //导航栏
+        title: Text("App Name"), 
+        actions: &lt;Widget&gt;[ //导航栏右侧菜单
+          IconButton(icon: Icon(Icons.share), onPressed: () {}),
+        ],
+      ),
+      drawer: MyDrawer(), //抽屉
+      bottomNavigationBar: BottomNavigationBar( // 底部导航
+        items: &lt;BottomNavigationBarItem&gt;[
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(icon: Icon(Icons.business), title: Text('Business')),
+          BottomNavigationBarItem(icon: Icon(Icons.school), title: Text('School')),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton( //悬浮按钮
+          child: Icon(Icons.add),
+          onPressed:_onAdd
+      ),
+    );
+  }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+  void _onAdd(){
+  }
+}
+</code></pre>
+<p>上面代码中我们用到了如下组件：</p>
+<div class="table-wrapper"><table><thead><tr><th>组件名称</th><th>解释</th></tr></thead><tbody>
+<tr><td>AppBar</td><td>一个导航栏骨架</td></tr>
+<tr><td>MyDrawer</td><td>抽屉菜单</td></tr>
+<tr><td>BottomNavigationBar</td><td>底部导航栏</td></tr>
+<tr><td>FloatingActionButton</td><td>漂浮按钮</td></tr>
+</tbody></table>
+</div>
+<p>下面我们来分别介绍一下它们。</p>
+<h2 id="572-appbar"><a class="header" href="#572-appbar">5.7.2 AppBar</a></h2>
+<p><code>AppBar</code>是一个Material风格的导航栏，通过它可以设置导航栏标题、导航栏菜单、导航栏底部的Tab标题等。下面我们看看AppBar的定义：</p>
+<pre><code class="language-dart">AppBar({
+  Key? key,
+  this.leading, //导航栏最左侧Widget，常见为抽屉菜单按钮或返回按钮。
+  this.automaticallyImplyLeading = true, //如果leading为null，是否自动实现默认的leading按钮
+  this.title,// 页面标题
+  this.actions, // 导航栏右侧菜单
+  this.bottom, // 导航栏底部菜单，通常为Tab按钮组
+  this.elevation = 4.0, // 导航栏阴影
+  this.centerTitle, //标题是否居中 
+  this.backgroundColor,
+  ...   //其他属性见源码注释
+})
+</code></pre>
+<p>如果给<code>Scaffold</code>添加了抽屉菜单，默认情况下<code>Scaffold</code>会自动将<code>AppBar</code>的<code>leading</code>设置为菜单按钮（如图5-8所示），点击它便可打开抽屉菜单。如果我们想自定义菜单图标，可以手动来设置<code>leading</code>，如：</p>
+<pre><code class="language-dart">Scaffold(
+  appBar: AppBar(
+    title: Text("App Name"),
+    leading: Builder(builder: (context) {
+      return IconButton(
+        icon: Icon(Icons.dashboard, color: Colors.white), //自定义图标
+        onPressed: () {
+          // 打开抽屉菜单  
+          Scaffold.of(context).openDrawer(); 
+        },
+      );
+    }),
+    ...  
+  )  
+</code></pre>
+<p>代码运行效果如图5-20所示：</p>
+<p><img src="../imgs/5-20.png" alt="图5-20" /></p>
+<p>可以看到左侧菜单已经替换成功。</p>
+<p>代码中打开抽屉菜单的方法在<code>ScaffoldState</code>中，通过<code>Scaffold.of(context)</code>可以获取父级最近的<code>Scaffold</code> 组件的<code>State</code>对象。</p>
+<h2 id="573-抽屉菜单drawer"><a class="header" href="#573-抽屉菜单drawer">5.7.3 抽屉菜单Drawer</a></h2>
+<p><code>Scaffold</code>的<code>drawer</code>和<code>endDrawer</code>属性可以分别接受一个Widget来作为页面的左、右抽屉菜单。如果开发者提供了抽屉菜单，那么当用户手指从屏幕左（或右）侧向里滑动时便可打开抽屉菜单。本节开始部分的示例中实现了一个左抽屉菜单<code>MyDrawer</code>，它的源码如下：</p>
+<pre><code class="language-dart">class MyDrawer extends StatelessWidget {
+  const MyDrawer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: MediaQuery.removePadding(
+        context: context,
+        //移除抽屉菜单顶部默认留白
+        removeTop: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: &lt;Widget&gt;[
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Row(
+                children: &lt;Widget&gt;[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ClipOval(
+                      child: Image.asset(
+                        "imgs/avatar.png",
+                        width: 80,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Wendux",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: &lt;Widget&gt;[
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: const Text('Add account'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Manage accounts'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>抽屉菜单通常将<code>Drawer</code>组件作为根节点，它实现了Material风格的菜单面板，<code>MediaQuery.removePadding</code>可以移除Drawer默认的一些留白（比如Drawer默认顶部会留和手机状态栏等高的留白），读者可以尝试传递不同的参数来看看实际效果。抽屉菜单页由顶部和底部组成，顶部由用户头像和昵称组成，底部是一个菜单列表，用ListView实现，关于ListView我们将在6.3节中详细介绍。</p>
+<h2 id="574-floatingactionbutton"><a class="header" href="#574-floatingactionbutton">5.7.4 FloatingActionButton</a></h2>
+<p><code>FloatingActionButton</code>是Material设计规范中的一种特殊Button，通常悬浮在页面的某一个位置作为某种常用动作的快捷入口，如本节示例中页面右下角的"➕"号按钮。我们可以通过<code>Scaffold</code>的<code>floatingActionButton</code>属性来设置一个<code>FloatingActionButton</code>，同时通过<code>floatingActionButtonLocation</code>属性来指定其在页面中悬浮的位置，这个比较简单，不再赘述。</p>
+<h2 id="575--底部tab导航栏"><a class="header" href="#575--底部tab导航栏">5.7.5  底部Tab导航栏</a></h2>
+<p>我们可以通过<code>Scaffold</code>的<code>bottomNavigationBar</code>属性来设置底部导航，如本节开始示例所示，我们通过Material组件库提供的<code>BottomNavigationBar</code>和<code>BottomNavigationBarItem</code>两种组件来实现Material风格的底部导航栏。可以看到上面的实现代码非常简单，所以不再赘述，但是如果我们想实现如图5-21所示效果的底部导航栏应该怎么做呢？</p>
+<p><img src="../imgs/5-21.png" alt="图5-21" /></p>
+<p>Material组件库中提供了一个<code>BottomAppBar</code> 组件，它可以和<code>FloatingActionButton</code>配合实现这种“打洞”效果，源码如下：</p>
+<pre><code class="language-dart">bottomNavigationBar: BottomAppBar(
+  color: Colors.white,
+  shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
+  child: Row(
+    children: [
+      IconButton(icon: Icon(Icons.home)),
+      SizedBox(), //中间位置空出
+      IconButton(icon: Icon(Icons.business)),
+    ],
+    mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
+  ),
+)
+</code></pre>
+<p>可以看到，上面代码中没有控制打洞位置的属性，实际上，打洞的位置取决于<code>FloatingActionButton</code>的位置，上面<code>FloatingActionButton</code>的位置为：</p>
+<pre><code class="language-dart">floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+</code></pre>
+<p>所以打洞位置在底部导航栏的正中间。</p>
+<p><code>BottomAppBar</code>的<code>shape</code>属性决定洞的外形，<code>CircularNotchedRectangle</code>实现了一个圆形的外形，我们也可以自定义外形，比如，Flutter Gallery示例中就有一个“钻石”形状的示例，读者感兴趣可以自行查看。</p>
+<h2 id="576-页面-body"><a class="header" href="#576-页面-body">5.7.6 页面 body</a></h2>
+<p>最后就是页面的 Body 部分了，Scaffold 有一个 <code>body </code> 属性，接收一个 Widget，我们可以传任意的 Widget ，在下一章中，我们会介绍 TabBarView，它是一个可以进行页面切换的组件，在多 Tab 的 App 中，一般都会将 TabBarView 作为 Scaffold 的 Body。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter5/fittedbox.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter6/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter5/fittedbox.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter6/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

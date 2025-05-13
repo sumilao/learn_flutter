@@ -1,0 +1,365 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>4.3：线性布局（Row和Column） - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="43-线性布局row和column"><a class="header" href="#43-线性布局row和column">4.3 线性布局（Row和Column）</a></h1>
+<p>所谓线性布局，即指沿水平或垂直方向排列子组件。Flutter 中通过<code>Row</code>和<code>Column</code>来实现线性布局，类似于Android 中的<code>LinearLayout</code>控件。<code>Row</code>和<code>Column</code>都继承自<code>Flex</code>，我们将在弹性布局一节中详细介绍<code>Flex</code>。</p>
+<h2 id="431-主轴和纵轴"><a class="header" href="#431-主轴和纵轴">4.3.1 主轴和纵轴</a></h2>
+<p>对于线性布局，有主轴和纵轴之分，如果布局是沿水平方向，那么主轴就是指水平方向，而纵轴即垂直方向；如果布局沿垂直方向，那么主轴就是指垂直方向，而纵轴就是水平方向。在线性布局中，有两个定义对齐方式的枚举类<code>MainAxisAlignment</code>和<code>CrossAxisAlignment</code>，分别代表主轴对齐和纵轴对齐。</p>
+<h2 id="432-row"><a class="header" href="#432-row">4.3.2 Row</a></h2>
+<p>Row可以沿水平方向排列其子widget。定义如下：</p>
+<pre><code class="language-dart">Row({
+  ...  
+  TextDirection textDirection,    
+  MainAxisSize mainAxisSize = MainAxisSize.max,    
+  MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+  VerticalDirection verticalDirection = VerticalDirection.down,  
+  CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  List&lt;Widget&gt; children = const &lt;Widget&gt;[],
+})
+</code></pre>
+<ul>
+<li><code>textDirection</code>：表示水平方向子组件的布局顺序(是从左往右还是从右往左)，默认为系统当前Locale环境的文本方向(如中文、英语都是从左往右，而阿拉伯语是从右往左)。</li>
+<li><code>mainAxisSize</code>：表示<code>Row</code>在主轴(水平)方向占用的空间，默认是<code>MainAxisSize.max</code>，表示尽可能多的占用水平方向的空间，此时无论子 widgets 实际占用多少水平空间，<code>Row</code>的宽度始终等于水平方向的最大宽度；而<code>MainAxisSize.min</code>表示尽可能少的占用水平空间，当子组件没有占满水平剩余空间，则<code>Row</code>的实际宽度等于所有子组件占用的水平空间；</li>
+<li><code>mainAxisAlignment</code>：表示子组件在<code>Row</code>所占用的水平空间内对齐方式，如果<code>mainAxisSize</code>值为<code>MainAxisSize.min</code>，则此属性无意义，因为子组件的宽度等于<code>Row</code>的宽度。只有当<code>mainAxisSize</code>的值为<code>MainAxisSize.max</code>时，此属性才有意义，<code>MainAxisAlignment.start</code>表示沿<code>textDirection</code>的初始方向对齐，如<code>textDirection</code>取值为<code>TextDirection.ltr</code>时，则<code>MainAxisAlignment.start</code>表示左对齐，<code>textDirection</code>取值为<code>TextDirection.rtl</code>时表示从右对齐。而<code>MainAxisAlignment.end</code>和<code>MainAxisAlignment.start</code>正好相反；<code>MainAxisAlignment.center</code>表示居中对齐。读者可以这么理解：<code>textDirection</code>是<code>mainAxisAlignment</code>的参考系。</li>
+<li><code>verticalDirection</code>：表示<code>Row</code>纵轴（垂直）的对齐方向，默认是<code>VerticalDirection.down</code>，表示从上到下。</li>
+<li><code>crossAxisAlignment</code>：表示子组件在纵轴方向的对齐方式，<code>Row</code>的高度等于子组件中最高的子元素高度，它的取值和<code>MainAxisAlignment</code>一样(包含<code>start</code>、<code>end</code>、 <code>center</code>三个值)，不同的是<code>crossAxisAlignment</code>的参考系是<code>verticalDirection</code>，即<code>verticalDirection</code>值为<code>VerticalDirection.down</code>时<code>crossAxisAlignment.start</code>指顶部对齐，<code>verticalDirection</code>值为<code>VerticalDirection.up</code>时，<code>crossAxisAlignment.start</code>指底部对齐；而<code>crossAxisAlignment.end</code>和<code>crossAxisAlignment.start</code>正好相反；</li>
+<li><code>children</code> ：子组件数组。</li>
+</ul>
+<h3 id="示例"><a class="header" href="#示例">示例</a></h3>
+<p>请阅读下面代码，先想象一下运行的结果：</p>
+<pre><code class="language-dart">Column(
+  //测试Row对齐方式，排除Column默认居中对齐的干扰
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: &lt;Widget&gt;[
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: &lt;Widget&gt;[
+        Text(" hello world "),
+        Text(" I am Jack "),
+      ],
+    ),
+    Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: &lt;Widget&gt;[
+        Text(" hello world "),
+        Text(" I am Jack "),
+      ],
+    ),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      textDirection: TextDirection.rtl,
+      children: &lt;Widget&gt;[
+        Text(" hello world "),
+        Text(" I am Jack "),
+      ],
+    ),
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.start,  
+      verticalDirection: VerticalDirection.up,
+      children: &lt;Widget&gt;[
+        Text(" hello world ", style: TextStyle(fontSize: 30.0),),
+        Text(" I am Jack "),
+      ],
+    ),
+  ],
+);
+</code></pre>
+<p>实际运行结果如图4-9所示：</p>
+<p><img src="../imgs/4-9.png" alt="图4-9" /></p>
+<p>解释：第一个<code>Row</code>很简单，默认为居中对齐；第二个<code>Row</code>，由于<code>mainAxisSize</code>值为<code>MainAxisSize.min</code>，<code>Row</code>的宽度等于两个<code>Text</code>的宽度和，所以对齐是无意义的，所以会从左往右显示；第三个<code>Row</code>设置<code>textDirection</code>值为<code>TextDirection.rtl</code>，所以子组件会从右向左的顺序排列，而此时<code>MainAxisAlignment.end</code>表示左对齐，所以最终显示结果就是图中第三行的样子；第四个 Row 测试的是纵轴的对齐方式，由于两个子 Text 字体不一样，所以其高度也不同，我们指定了<code>verticalDirection</code>值为<code>VerticalDirection.up</code>，即从低向顶排列，而此时<code>crossAxisAlignment</code>值为<code>CrossAxisAlignment.start</code>表示底对齐。</p>
+<h2 id="433-column"><a class="header" href="#433-column">4.3.3 Column</a></h2>
+<p><code>Column</code>可以在垂直方向排列其子组件。参数和<code>Row</code>一样，不同的是布局方向为垂直，主轴纵轴正好相反，读者可类比<code>Row</code>来理解，下面看一个例子：</p>
+<pre><code class="language-dart">import 'package:flutter/material.dart';
+
+class CenterColumnRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: &lt;Widget&gt;[
+        Text("hi"),
+        Text("world"),
+      ],
+    );
+  }
+}
+</code></pre>
+<p>运行效果如图4-10所示：</p>
+<p><img src="../imgs/4-10.png" alt="图4-10示例" /></p>
+<p>解释：</p>
+<ul>
+<li>由于我们没有指定<code>Column</code>的<code>mainAxisSize</code>，所以使用默认值<code>MainAxisSize.max</code>，则<code>Column</code>会在垂直方向占用尽可能多的空间，此例中会占满整个屏幕高度。</li>
+<li>由于我们指定了 <code>crossAxisAlignment</code> 属性为<code>CrossAxisAlignment.center</code>，那么子项在<code>Column</code>纵轴方向（此时为水平方向）会居中对齐。注意，在水平方向对齐是有边界的，总宽度为<code>Column</code>占用空间的实际宽度，而实际的宽度取决于子项中宽度最大的Widget。在本例中，<code>Column</code>有两个子Widget，而显示“world”的<code>Text</code>宽度最大，所以<code>Column</code>的实际宽度则为<code>Text("world")</code> 的宽度，所以居中对齐后<code>Text("hi")</code>会显示在<code>Text("world")</code>的中间部分。</li>
+</ul>
+<p><strong>实际上，<code>Row</code>和<code>Column</code>都只会在主轴方向占用尽可能大的空间，而纵轴的长度则取决于他们最大子元素的长度</strong>。如果我们想让本例中的两个文本控件在整个手机屏幕中间对齐，我们有两种方法：</p>
+<ul>
+<li>
+<p>将<code>Column</code>的宽度指定为屏幕宽度；这很简单，我们可以通过<code>ConstrainedBox</code>或<code>SizedBox</code>（我们将在后面章节中专门介绍这两个Widget）来强制更改宽度限制，例如：</p>
+<pre><code class="language-dart">ConstrainedBox(
+  constraints: BoxConstraints(minWidth: double.infinity), 
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: &lt;Widget&gt;[
+      Text("hi"),
+      Text("world"),
+    ],
+  ),
+);
+</code></pre>
+<p>将<code>minWidth</code>设为<code>double.infinity</code>，可以使宽度占用尽可能多的空间。</p>
+</li>
+<li>
+<p>使用<code>Center</code> 组件；我们将在后面章节中介绍。</p>
+</li>
+</ul>
+<h2 id="434-特殊情况"><a class="header" href="#434-特殊情况">4.3.4 特殊情况</a></h2>
+<p>如果<code>Row</code>里面嵌套<code>Row</code>，或者<code>Column</code>里面再嵌套<code>Column</code>，那么只有最外面的<code>Row</code>或<code>Column</code>会占用尽可能大的空间，里面<code>Row</code>或<code>Column</code>所占用的空间为实际大小，下面以<code>Column</code>为例说明：</p>
+<pre><code class="language-dart">Container(
+  color: Colors.green,
+  child: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max, //有效，外层Colum高度为整个屏幕
+      children: &lt;Widget&gt;[
+        Container(
+          color: Colors.red,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,//无效，内层Colum高度为实际高度  
+            children: &lt;Widget&gt;[
+              Text("hello world "),
+              Text("I am Jack "),
+            ],
+          ),
+        )
+      ],
+    ),
+  ),
+);
+</code></pre>
+<p>运行效果如图4-11所示：</p>
+<p><img src="../imgs/4-11.png" alt="图4-11" /></p>
+<p>如果要让里面的<code>Column</code>占满外部<code>Column</code>，可以使用<code>Expanded</code> 组件：</p>
+<pre><code class="language-dart">Expanded( 
+  child: Container(
+    color: Colors.red,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center, //垂直方向居中对齐
+      children: &lt;Widget&gt;[
+        Text("hello world "),
+        Text("I am Jack "),
+      ],
+    ),
+  ),
+)
+</code></pre>
+<p>运行效果如图4-12所示：</p>
+<p><img src="../imgs/4-12.png" alt="图4-12" /></p>
+<p>我们将在介绍弹性布局时详细介绍Expanded。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter4/constraints.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter4/flex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter4/constraints.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter4/flex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

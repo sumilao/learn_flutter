@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>11.4：实例：Http分块下载 - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="114-实例http分块下载"><a class="header" href="#114-实例http分块下载">11.4 实例：Http分块下载</a></h1>
+<p>本节将通过一个“Http分块下载”的示例演示一下dio的具体用法。</p>
+<h2 id="1141-http分块下载原理"><a class="header" href="#1141-http分块下载原理">11.4.1 http分块下载原理</a></h2>
+<p>Http协议定义了分块传输的响应header字段，但具体是否支持取决于Server的实现，我们可以指定请求头的"range"字段来验证服务器是否支持分块传输。例如，我们可以利用curl命令来验证：</p>
+<pre><code class="language-shell">bogon:~ duwen$ curl -H "Range: bytes=0-10" http://download.dcloud.net.cn/HBuilder.9.0.2.macosx_64.dmg -v
+# 请求头
+&gt; GET /HBuilder.9.0.2.macosx_64.dmg HTTP/1.1
+&gt; Host: download.dcloud.net.cn
+&gt; User-Agent: curl/7.54.0
+&gt; Accept: */*
+&gt; Range: bytes=0-10
+# 响应头
+&lt; HTTP/1.1 206 Partial Content
+&lt; Content-Type: application/octet-stream
+&lt; Content-Length: 11
+&lt; Connection: keep-alive
+&lt; Date: Thu, 21 Feb 2019 06:25:15 GMT
+&lt; Content-Range: bytes 0-10/233295878
+
+</code></pre>
+<p>我们在请求头中添加"Range: bytes=0-10"的作用是，告诉服务器本次请求我们只想获取文件0-10(包括10，共11字节)这块内容。如果服务器支持分块传输，则响应状态码为206，表示“部分内容”，并且同时响应头中包含“Content-Range”字段，如果不支持则不会包含。我们看看上面“Content-Range”的内容：</p>
+<pre><code>Content-Range: bytes 0-10/233295878
+</code></pre>
+<p>0-10表示本次返回的区块，233295878代表文件的总长度，单位都是byte,  也就是该文件大概233M多一点。</p>
+<p>基于此，我们可以设计一个简单的多线程的文件分块下载器，实现的思路是：</p>
+<ol>
+<li>先检测是否支持分块传输，如果不支持，则直接下载；若支持，则将剩余内容分块下载。</li>
+<li>各个分块下载时保存到各自临时文件，等到所有分块下载完后合并临时文件。</li>
+<li>删除临时文件。</li>
+</ol>
+<h2 id="1142-实现"><a class="header" href="#1142-实现">11.4.2 实现</a></h2>
+<p>下面是整体的流程：</p>
+<pre><code class="language-dart">// 通过第一个分块请求检测服务器是否支持分块传输  
+Response response = await downloadChunk(url, 0, firstChunkSize, 0);
+if (response.statusCode == 206) {    //如果支持
+    //解析文件总长度，进而算出剩余长度
+    total = int.parse(
+        response.headers.value(HttpHeaders.contentRangeHeader).split("/").last);
+    int reserved = total -
+        int.parse(response.headers.value(HttpHeaders.contentLengthHeader));
+    //文件的总块数(包括第一块)
+    int chunk = (reserved / firstChunkSize).ceil() + 1;
+    if (chunk &gt; 1) {
+        int chunkSize = firstChunkSize;
+        if (chunk &gt; maxChunk + 1) {
+            chunk = maxChunk + 1;
+            chunkSize = (reserved / maxChunk).ceil();
+        }
+        var futures = &lt;Future&gt;[];
+        for (int i = 0; i &lt; maxChunk; ++i) {
+            int start = firstChunkSize + i * chunkSize;
+            //分块下载剩余文件  
+            futures.add(downloadChunk(url, start, start + chunkSize, i + 1));
+        }
+        //等待所有分块全部下载完成
+        await Future.wait(futures);
+    }
+    //合并文件文件  
+    await mergeTempFiles(chunk);
+}
+</code></pre>
+<p>下面我们使用dio的<code>download</code> API 实现<code>downloadChunk</code>：</p>
+<pre><code class="language-dart">//start 代表当前块的起始位置，end代表结束位置
+//no 代表当前是第几块
+Future&lt;Response&gt; downloadChunk(url, start, end, no) async {
+  progress.add(0); //progress记录每一块已接收数据的长度
+  --end;
+  return dio.download(
+    url,
+    savePath + "temp$no", //临时文件按照块的序号命名，方便最后合并
+    onReceiveProgress: createCallback(no), // 创建进度回调，后面实现
+    options: Options(
+      headers: {"range": "bytes=$start-$end"}, //指定请求的内容区间
+    ),
+  );
+}
+</code></pre>
+<p>接下来实现<code>mergeTempFiles</code>:</p>
+<pre><code class="language-dart">Future mergeTempFiles(chunk) async {
+  File f = File(savePath + "temp0");
+  IOSink ioSink= f.openWrite(mode: FileMode.writeOnlyAppend);
+  //合并临时文件  
+  for (int i = 1; i &lt; chunk; ++i) {
+    File _f = File(savePath + "temp$i");
+    await ioSink.addStream(_f.openRead());
+    await _f.delete(); //删除临时文件
+  }
+  await ioSink.close();
+  await f.rename(savePath); //合并后的文件重命名为真正的名称
+}
+</code></pre>
+<p>下面我们看一下完整实现：</p>
+<pre><code class="language-dart">Future downloadWithChunks(
+  url,
+  savePath, {
+  ProgressCallback onReceiveProgress,
+}) async {
+  const firstChunkSize = 102;
+  const maxChunk = 3;
+
+  int total = 0;
+  var dio = Dio();
+  var progress = &lt;int&gt;[];
+
+  createCallback(no) {
+    return (int received, _) {
+      progress[no] = received;
+      if (onReceiveProgress != null &amp;&amp; total != 0) {
+        onReceiveProgress(progress.reduce((a, b) =&gt; a + b), total);
+      }
+    };
+  }
+
+  Future&lt;Response&gt; downloadChunk(url, start, end, no) async {
+    progress.add(0);
+    --end;
+    return dio.download(
+      url,
+      savePath + "temp$no",
+      onReceiveProgress: createCallback(no),
+      options: Options(
+        headers: {"range": "bytes=$start-$end"},
+      ),
+    );
+  }
+
+  Future mergeTempFiles(chunk) async {
+    File f = File(savePath + "temp0");
+    IOSink ioSink= f.openWrite(mode: FileMode.writeOnlyAppend);
+    for (int i = 1; i &lt; chunk; ++i) {
+      File _f = File(savePath + "temp$i");
+      await ioSink.addStream(_f.openRead());
+      await _f.delete();
+    }
+    await ioSink.close();
+    await f.rename(savePath);
+  }
+
+  Response response = await downloadChunk(url, 0, firstChunkSize, 0);
+  if (response.statusCode == 206) {
+    total = int.parse(
+        response.headers.value(HttpHeaders.contentRangeHeader).split("/").last);
+    int reserved = total -
+        int.parse(response.headers.value(HttpHeaders.contentLengthHeader));
+    int chunk = (reserved / firstChunkSize).ceil() + 1;
+    if (chunk &gt; 1) {
+      int chunkSize = firstChunkSize;
+      if (chunk &gt; maxChunk + 1) {
+        chunk = maxChunk + 1;
+        chunkSize = (reserved / maxChunk).ceil();
+      }
+      var futures = &lt;Future&gt;[];
+      for (int i = 0; i &lt; maxChunk; ++i) {
+        int start = firstChunkSize + i * chunkSize;
+        futures.add(downloadChunk(url, start, start + chunkSize, i + 1));
+      }
+      await Future.wait(futures);
+    }
+    await mergeTempFiles(chunk);
+  }
+}
+</code></pre>
+<p>现在可以进行分块下载了：</p>
+<pre><code class="language-dart">main() async {
+  var url = "http://download.dcloud.net.cn/HBuilder.9.0.2.macosx_64.dmg";
+  var savePath = "./example/HBuilder.9.0.2.macosx_64.dmg";
+  await downloadWithChunks(url, savePath, onReceiveProgress: (received, total) {
+    if (total != -1) {
+      print("${(received / total * 100).floor()}%");
+    }
+  });
+}
+</code></pre>
+<h2 id="1143-思考"><a class="header" href="#1143-思考">11.4.3 思考</a></h2>
+<ol>
+<li>
+<p>分块下载真的能提高下载速度吗？</p>
+<p>其实下载速度的主要瓶颈是取决于网络速度和服务器的出口速度，如果是同一个数据源，分块下载的意义并不大，因为服务器是同一个，出口速度确定的，主要取决于网速，而上面的例子正式同源分块下载，读者可以自己对比一下分块和不分块的下载速度。如果有多个下载源，并且每个下载源的出口带宽都是有限制的，这时分块下载可能会更快一下，之所以说“可能”，是由于这并不是一定的，比如有三个源，三个源的出口带宽都为1Gb/s，而我们设备所连网络的峰值假设只有800Mb/s，那么瓶颈就在我们的网络。即使我们设备的带宽大于任意一个源，下载速度依然不一定就比单源单线下载快，试想一下，假设有两个源A和B，速度A源是B源的3倍，如果采用分块下载，两个源各下载一半的话，读者可以算一下所需的下载时间，然后再算一下只从A源下载所需的时间，看看哪个更快。</p>
+<p>分块下载的最终速度受设备所在网络带宽、源出口速度、每个块大小、以及分块的数量等诸多因素影响，实际过程中很难保证速度最优。在实际开发中，读者可可以先测试对比后再决定是否使用。</p>
+</li>
+<li>
+<p>分块下载有什么实际的用处吗？</p>
+<p>分块下载还有一个比较使用的场景是断点续传，可以将文件分为若干个块，然后维护一个下载状态文件用以记录每一个块的状态，这样即使在网络中断后，也可以恢复中断前的状态，具体实现读者可以自己尝试一下，还是有一些细节需要特别注意的，比如分块大小多少合适？下载到一半的块如何处理？要不要维护一个任务队列？</p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter11/dio.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter11/websocket.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter11/dio.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter11/websocket.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>14.8：绘制（四）Compositing - flutter实战（第二版）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">flutter实战（第二版）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="148-绘制四compositing"><a class="header" href="#148-绘制四compositing">14.8 绘制（四）Compositing</a></h1>
+<p>本节我们来介绍一下 flushCompositingBits()。现在，我们再来回顾一下Flutter的渲染管线：</p>
+<pre><code class="language-dart">void drawFrame(){
+  pipelineOwner.flushLayout();
+  pipelineOwner.flushCompositingBits();
+  pipelineOwner.flushPaint();
+  renderView.compositeFrame()
+  ...//省略  
+} 
+</code></pre>
+<p>其中只有 flushCompositingBits() 还没有介绍过，这是因为要理解flushCompositingBits()，就必须的了解Layer是什么，以及 Layer 树构建的过程。为了更容易理解它，我们先看一个demo。</p>
+<h2 id="1481-customrotatedbox"><a class="header" href="#1481-customrotatedbox">14.8.1 CustomRotatedBox</a></h2>
+<p>我们实现一个CustomRotatedBox，它的功能是将其子元素放倒（顺时针旋转 90 度），要实现个效果我们可以直接使用 canvas 的变换功能，下面是核心代码：</p>
+<pre><code class="language-dart">class CustomRotatedBox extends SingleChildRenderObjectWidget {
+  CustomRotatedBox({Key? key, Widget? child}) : super(key: key, child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return CustomRenderRotatedBox();
+  }
+}
+
+class CustomRenderRotatedBox extends RenderBox
+    with RenderObjectWithChildMixin&lt;RenderBox&gt; {
+
+  @override
+  void performLayout() {
+    _paintTransform = null;
+    if (child != null) {
+      child!.layout(constraints, parentUsesSize: true);
+      size = child!.size;
+      //根据子组件大小计算出旋转矩阵
+      _paintTransform = Matrix4.identity()
+        ..translate(size.width / 2.0, size.height / 2.0)
+        ..rotateZ(math.pi / 2) // 旋转90度
+        ..translate(-child!.size.width / 2.0, -child!.size.height / 2.0);
+    } else {
+      size = constraints.smallest;
+    }
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if(child!=null){
+       // 根据偏移，需要调整一下旋转矩阵
+        final Matrix4 transform =
+          Matrix4.translationValues(offset.dx, offset.dy, 0.0)
+            ..multiply(_paintTransform!)
+            ..translate(-offset.dx, -offset.dy);
+      _paint(context, offset, transform);
+    } else {
+      //...
+    }
+  }
+  
+ void _paint(PaintingContext context,Offset offset,Matrix4 transform ){
+    // 为了不干扰其他和自己在同一个layer上绘制的节点，所以需要先调用save然后在子元素绘制完后
+    // 再调用restore显示，关于save/restore有兴趣可以查看Canvas API doc
+    context.canvas
+      ..save()
+      ..transform(transform.storage);
+    context.paintChild(child!, offset);
+    context.canvas.restore();
+  }
+  ... //省略无关代码
+}
+
+
+</code></pre>
+<p>下面我们写个demo测试一下：</p>
+<pre><code class="language-dart">class CustomRotatedBoxTest extends StatelessWidget {
+  const CustomRotatedBoxTest({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomRotatedBox(
+        child: Text(
+          "A",
+          textScaleFactor: 5,
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>运行效果如图14-17，A被成功放倒了：</p>
+<p><img src="../imgs/14-17.png" alt="图14-17" /></p>
+<p>现在我们给 CustomRotatedBox 添加一个 RepaintBoundary 再试试：</p>
+<pre><code class="language-dart">@override
+Widget build(BuildContext context) {
+  return Center(
+    child: CustomRotatedBox(
+      child: RepaintBoundary( // 添加一个 RepaintBoundary
+        child: Text(
+          "A",
+          textScaleFactor: 5,
+        ),
+      ),
+    ),
+  );
+}
+</code></pre>
+<p>运行后如图14-18。咦，A怎么又站起来了！</p>
+<p><img src="../imgs/14-18.png" alt="图14-18" /></p>
+<p>结合图说明！</p>
+<p>我们来分析一下原因：根据上一节的知识，我们可以很容易画出添加 RepaintBoundary 前和后的 Layer 树结构，如图14-19：</p>
+<p><img src="../imgs/14-19.png" alt="图14-19" /></p>
+<p>添加 RepaintBoundary 后，CustomRotatedBox 中的持有的还是 OffsetLayer1 ：</p>
+<pre><code class="language-dart"> void _paint(PaintingContext context,Offset offset,Matrix4 transform ){
+    context.canvas // 该 canvas 对应的是 PictureLayer1 
+      ..save()
+      ..transform(transform.storage);
+    // 子节点是绘制边界节点，会在新的 OffsetLayer2中的 PictureLayer2 上绘制
+    context.paintChild(child!, offset); 
+    context.canvas.restore();
+  }
+  ... //省略无关代码
+}
+</code></pre>
+<p>很显然，CustomRotatedBox 中进行旋转变换的 canvas 对应的是 PictureLayer1，而 Text("A") 的绘制是使用的PictureLayer2 对应的 canvas ，他们属于不同的 Layer。可以发现父子的 PictureLayer "分离了"，所以CustomRotatedBox 也就不会对 Text("A")  起作用。那么如何解决这个问题的思路呢？</p>
+<p>我们在前面的小节介绍过，有很多容器类组件都附带变换效果，拥有旋转变换的容器类Layer是 TransformLayer，那么我们就可以在 CustomRotatedBox 中绘制子节点之前：</p>
+<ol>
+<li>创建一个TransformLayer（记为 TransformLayer1） 添加到 Layer树中，接着创建一个新的 PaintingContext 和 TransformLayer1绑定。</li>
+<li>子节点通过这个新的 PaintingContext 去绘制。</li>
+</ol>
+<p>完成上述操作之后，后代节点绘制所在的 PictureLayer 都会是 TransformLayer 的子节点，因此我们可以通过 TransformLayer 对所有子节点整体做变换。图14-20是添加是 TransformLayer1前、后的 Layer 树结构。</p>
+<p><img src="../imgs/14-20.png" alt="图14-20" /></p>
+<p>这其实就是一个重新 <strong>Layer 合成（layer compositing）</strong> 的过程：创建一个新的 ContainerLayer，然后将该ContainerLayer 传递给子节点，这样后代节点的Layer必然属于ContainerLayer ，那么给这个 ContainerLayer 做变换就会对其全部的子孙节点生效。因为 “Layer 合成” 在不同的语境会有不同的指代，为了便于描述，本节中 “layer 合成” 或 “合成 layer” 就特指上述过程。</p>
+<blockquote>
+<p>“Layer 合成” 在不同的语境会有不同的指代，比如 skia 最终渲染时也是将一个个 layer 渲染出来，这个过程也可以认为是多个 layer 上的绘制信息合成为最终的位图信息；另外 canvas 中也有 layer 的概念（canvas.save 方法生成新的layer），对应的将所有layer 绘制结果最后叠加在一起的过程也可以成为 layer 合成。</p>
+</blockquote>
+<p>下面我们看看具体代码实现。由于 Layer 的组合是一个标准的过程（唯一的不同是使用哪种ContainerLayer来作为父容器），PantingContext 中提供了一个 pushLayer 方法来执行组合过程，我们看看其实现源码：</p>
+<pre><code class="language-dart">void pushLayer(ContainerLayer childLayer, PaintingContextCallback painter, Offset offset, { Rect? childPaintBounds }) {
+  
+  if (childLayer.hasChildren) {
+    childLayer.removeAllChildren();
+  }
+  //下面两行是向Layer树中添加新Layer的标准操作，在之前小节中详细介绍过，忘记的话可以去查阅。
+  stopRecordingIfNeeded();
+  appendLayer(childLayer);
+  
+  //通过新layer创建一个新的childContext对象
+  final PaintingContext childContext = 
+    createChildContext(childLayer, childPaintBounds ?? estimatedBounds);
+  //painter是绘制子节点的回调，我们需要将新的childContext对象传给它
+  painter(childContext, offset);
+  //子节点绘制完成后获取绘制产物，将其保存到PictureLayer.picture中
+  childContext.stopRecordingIfNeeded();
+}
+</code></pre>
+<p>那么，我们只需要创建一个 TransformLayer 然后指定我们需要的旋转变换，然后直接调用 pushLayer 可以：</p>
+<pre><code class="language-dart">// 创建一个持有 TransformLayer 的 handle.
+final LayerHandle&lt;TransformLayer&gt; _transformLayer = LayerHandle&lt;TransformLayer&gt;();
+
+void _paintWithNewLayer(PaintingContext context, Offset offset, Matrix4 transform) {
+    //创建一个 TransformLayer，保存在handle中
+    _transformLayer.layer = _transformLayer.layer ?? TransformLayer();
+    _transformLayer.layer!.transform = transform;
+    
+    context.pushLayer(
+      _transformLayer.layer!,
+      _paintChild, // 子节点绘制回调；添加完layer后，子节点会在新的layer上绘制
+      offset,
+      childPaintBounds: MatrixUtils.inverseTransformRect(
+        transform,
+        offset &amp; size,
+      ),
+    );
+ }
+
+ // 子节点绘制回调 
+ void _paintChild(PaintingContext context, Offset offset) {
+   context.paintChild(child!, offset);
+ }
+</code></pre>
+<p>然后我们需要在 paint 方法中判断一下子节点是否是绘制边界节点，如果是则需要走layer组合，如果不是则需要 走 layer 合成：</p>
+<pre><code class="language-dart"> @override
+ void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+      final Matrix4 transform =
+          Matrix4.translationValues(offset.dx, offset.dy, 0.0)
+            ..multiply(_paintTransform!)
+            ..translate(-offset.dx, -offset.dy);
+      
+      if (child!.isRepaintBoundary) { // 添加判断
+        _paintWithNewLayer(context, offset, transform);
+      } else {
+        _paint(context, offset, transform);
+      }
+    } else {
+      _transformLayer.layer = null;
+    }
+ }
+</code></pre>
+<p>为了让代码看起看更清晰，我们将child不为空时的绘制逻辑逻辑封装一个 <code>pushTransform </code>函数里：</p>
+<pre><code class="language-dart">  TransformLayer? pushTransform(
+    PaintingContext context,
+    bool needsCompositing,
+    Offset offset,
+    Matrix4 transform,
+    PaintingContextCallback painter, {
+    TransformLayer? oldLayer,
+  }) {
+    
+    final Matrix4 effectiveTransform =
+        Matrix4.translationValues(offset.dx, offset.dy, 0.0)
+          ..multiply(transform)
+          ..translate(-offset.dx, -offset.dy);
+    
+    if (needsCompositing) {
+      final TransformLayer layer = oldLayer ?? TransformLayer();
+      layer.transform = effectiveTransform;
+      context.pushLayer(
+        layer,
+        painter,
+        offset,
+        childPaintBounds: MatrixUtils.inverseTransformRect(
+          effectiveTransform,
+          context.estimatedBounds,
+        ),
+      );
+      return layer;
+    } else {
+      context.canvas
+        ..save()
+        ..transform(effectiveTransform.storage);
+      painter(context, offset);
+      context.canvas.restore();
+      return null;
+    }
+  }
+</code></pre>
+<p>然后修改一下 paint 实现，直接调用 pushTransform 方法即可：</p>
+<pre><code class="language-dart">@override
+void paint(PaintingContext context, Offset offset) {
+  if (child != null) {
+    pushTransform(
+      context,
+      child!.isRepaintBoundary,
+      offset,
+      _paintTransform!,
+      _paintChild,
+      oldLayer: _transformLayer.layer,
+    );
+  } else {
+    _transformLayer.layer = null;
+  }
+}
+</code></pre>
+<p>是不是清晰多了，现在我们重新运行一下示例，效果和图14-17一样，A被成功放倒了！</p>
+<p><img src="../imgs/14-17.png" alt="图14-17" /></p>
+<p>需要说明的是，其实 PaintingContext 已经帮我们封装好了 pushTransform 方法，我们可以直接使用它：</p>
+<pre><code class="language-dart">@override
+void paint(PaintingContext context, Offset offset) {
+  if (child != null) {
+    context.pushTransform(
+      child!.isRepaintBoundary,
+      offset,
+      _paintTransform!,
+      _paintChild,
+      oldLayer: _transformLayer.layer,
+    );
+  } else {
+    _transformLayer.layer = null;
+  }
+}
+</code></pre>
+<p>实际上，PaintingContext  针对常见的拥有变换功能的容器类Layer的组合都封装好了相应的方法，同时Flutter中已经预定了拥有相应变换功能的组件，下面是一个对应表：</p>
+<div class="table-wrapper"><table><thead><tr><th>Layer的名称</th><th>PaintingContext对应的方法</th><th>Widget</th></tr></thead><tbody>
+<tr><td>ClipPathLayer</td><td>pushClipPath</td><td>ClipPath</td></tr>
+<tr><td>OpacityLayer</td><td>pushOpacity</td><td>Opacity</td></tr>
+<tr><td>ClipRRectLayer</td><td>pushClipRRect</td><td>ClipRRect</td></tr>
+<tr><td>ClipRectLayer</td><td>pushClipRect</td><td>ClipRect</td></tr>
+<tr><td>TransformLayer</td><td>pushTransform</td><td>RotatedBox、Transform</td></tr>
+</tbody></table>
+</div>
+<h2 id="1482-什么时候需要合成-layer-"><a class="header" href="#1482-什么时候需要合成-layer-">14.8.2 什么时候需要合成 Layer ？</a></h2>
+<h3 id="1-合成-layer-的原则"><a class="header" href="#1-合成-layer-的原则">1. 合成 Layer 的原则</a></h3>
+<p>通过上面的例子我们知道 CustomRotatedBox 的直接子节点是绘制边界节点时 CustomRotatedBox 中就需要合成 layer。实际上这只是一种特例，还有一些其他情况也需要 CustomRotatedBox 进行 Layer 合成，那什么时候需要 Layer 合成有没有一个一般性的普适原则？答案是：有！ 我们思考一下 CustomRotatedBox 中需要 Layer 合成的根本原因是什么？如果 CustomRotatedBox 的所有后代节点都共享的是同一个PictureLayer，但是，一旦有后代节点创建了新的PictureLayer，则绘制就会脱离了之前PictureLayer，因为不同的PictureLayer上的绘制是相互隔离的，是不能相互影响，所以为了使变换对所有后代节点对应的 PictureLayer 都生效，则我们就需要将所有后代节点的添加到同一个 ContainerLayer 中，所以就需要在 CustomRotatedBox 中先进行 Layer 合成。</p>
+<p>综上，一个普适的原则就呼之欲出了：<strong>当后代节点会向 layer 树中添加新的绘制类Layer时，则父级的变换类组件中就需要合成 Layer</strong>。下面我们验证一下：</p>
+<p>现在我们修改一下上面的示例，给 RepaintBoundary 添加一个 Center 父组件：</p>
+<pre><code class="language-dart">@override
+Widget build(BuildContext context) {
+  return Center(
+    child: CustomRotatedBox(
+      child: Center( // 新添加
+        child: RepaintBoundary(
+          child: Text(
+            "A",
+            textScaleFactor: 5,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+</code></pre>
+<p>因为 CustomRotatedBox 中只判断了其直接子节点的<code>child!.isRepaintBoundary</code> 为 true时，才会进行 layer 合成，而现在它的直接子节点是Center，所以该判断会是false，则不会进行 layer 合成。但是根据我们上面得出的结论，RepaintBoundary 作为CustomRotatedBox 的后代节点且会向 layer 树中添加新 layer 时就需要进行 layer合成，而本例中是应该合成layer但实际上却没有合成，所以预期是不能将 "A" 放倒的，运行后发现效果和之前的图14-18相同：</p>
+<p><img src="../imgs/14-18.png" alt="图14-18" /></p>
+<p>果然  ”A“ 并没有被放倒！看来我们的 CustomRotatedBox 还是需要继续修改。解决这个问题并不难，我们在判断是否需要进行 Layer 合成时，要去遍历整个子树，看看否存在绘制边界节点，如果是则合成，反之则否。为此，我们新定义一个在子树上查找是否存在绘制边界节点的 <code>needCompositing() </code> 方法：</p>
+<pre><code class="language-dart">//子树中递归查找是否存在绘制边界
+needCompositing() {
+  bool result = false;
+  _visit(RenderObject child) {
+    if (child.isRepaintBoundary) {
+      result = true;
+      return ;
+    } else {
+      //递归查找
+      child.visitChildren(_visit);
+    }
+  }
+  //遍历子节点
+  visitChildren(_visit);
+  return result;
+}
+</code></pre>
+<p>然后需要修改一下 paint 实现：</p>
+<pre><code class="language-dart">@override
+void paint(PaintingContext context, Offset offset) {
+  if (child != null) {
+    context.pushTransform(
+      needCompositing(), //子树是否存在绘制边界节点
+      offset,
+      _paintTransform!,
+      _paintChild,
+      oldLayer: _transformLayer.layer,
+    );
+  } else {
+    _transformLayer.layer = null;
+  }
+}
+</code></pre>
+<p>现在，我们再来运行一下demo，运行后效果和图14-17相同：</p>
+<p><img src="../imgs/14-17.png" alt="图14-17" /></p>
+<p>又成功放倒了！但还有问题，我们继续往下看。</p>
+<h3 id="2-alwaysneedscompositing"><a class="header" href="#2-alwaysneedscompositing">2. alwaysNeedsCompositing</a></h3>
+<p>我们考虑一下这种情况：如果  CustomRotatedBox 的后代节点中没有绘制边界节点，但是有后代节点向 layer 树中添加了新的 layer。这种情况下，按照我们之前得出的结论 CustomRotatedBox 中也是需要进行 layer 合成的，但  CustomRotatedBox  实际上并没有。问题知道了，但是这个问题却不好解决，原因是我们在 CustomRotatedBox 中遍历后代节点时，是无法知道非绘制边界节点是否往 layer树中添加了新的 layer。怎么办呢？Flutter是通过约定来解决这个问题的：</p>
+<ol>
+<li>
+<p>RenderObject 中定义了一个布尔类型 <code>alwaysNeedsCompositing</code> 属性。</p>
+</li>
+<li>
+<p>约定：自定义组件中，如果组件 <code>isRepaintBoundary</code> 为 <code>false</code> 时，在绘制时要会向 layer 树中添加新的 layer的话，要将 <code>alwaysNeedsCompositing</code> 置为 <code>true</code> 。</p>
+</li>
+</ol>
+<p>开发者在自定义组件时应该遵守这个规范。根据此规范，CustomRotatedBox 中我们在子树中递归查找时的判断条件就可以改为：</p>
+<pre><code class="language-dart">child.isRepaintBoundary || child.alwaysNeedsCompositing
+</code></pre>
+<p>最终 我们的<code>needCompositing</code> 实现如下：</p>
+<pre><code class="language-dart"> //子树中递归查找是否存在绘制边界
+ needCompositing() {
+    bool result = false;
+    _visit(RenderObject child) {
+      // 修改判断条件改为
+      if (child.isRepaintBoundary || child.alwaysNeedsCompositing) {
+        result = true;
+        return ;
+      } else {
+        child.visitChildren(_visit);
+      }
+    }
+    visitChildren(_visit);
+    return result;
+  }
+</code></pre>
+<blockquote>
+<p>注意：这要求非绘制节点组件在向 layer 树中添加 layer 时必须的让自身的 <code>alwaysNeedsCompositing</code> 值为 <code>ture</code> .</p>
+</blockquote>
+<p>下面我们看一下 flutter 中  Opacity 组件的实现。</p>
+<h3 id="3-opacity-解析"><a class="header" href="#3-opacity-解析">3. Opacity 解析</a></h3>
+<p>Opacity 可以对子树进行透明度控制，这个效果通过 canvas 是很难实现的，所以 flutter 中直接使用了 OffsetLayer 合成的方式来实现：</p>
+<pre><code class="language-dart">class RenderOpacity extends RenderProxyBox {
+  
+  // 本组件是非绘制边界节点，但会在部分透明的情况下向layer树中添加新的Layer，所以部分透明时要返回 true
+  @override
+  bool get alwaysNeedsCompositing =&gt; child != null &amp;&amp; (_alpha != 0 &amp;&amp; _alpha != 255);
+  
+    @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+      if (_alpha == 0) {
+        // 完全透明，则没必要再绘制子节点了
+        layer = null;
+        return;
+      }
+      if (_alpha == 255) {
+        // 完全不透明，则不需要变换处理，直接绘制子节点即可
+        layer = null;
+        context.paintChild(child!, offset);
+        return;
+      }
+      // 部分透明，需要通过OffsetLayer来处理，会向layer树中添加新 layer
+      layer = context.pushOpacity(offset, _alpha, super.paint, oldLayer: layer as OpacityLayer?);
+    }
+  }
+}  
+</code></pre>
+<h3 id="4-优化"><a class="header" href="#4-优化">4. 优化</a></h3>
+<p>注意，上面我们通过 CustomRotatedBox 演示了变换类组件的核心原理，不过还有一些优化的地方，比如：</p>
+<ol>
+<li>变换类组件中，遍历子树以确定是否需要 layer 合成是变换类组件的通用逻辑，不需要在每个组件里都实现一遍。</li>
+<li>不是每一次重绘都需要去遍历子树，比如可以在初始化时遍历一次，然后将结果缓存，如果后续有变化，再重新遍历更新即可，此时直接使用缓存的结果。</li>
+</ol>
+<p>Flutter 也考虑到了这个问题，于是便有了flushCompositingBits 方法，我们下面来正式介绍它。</p>
+<h2 id="1483-flushcompositingbits"><a class="header" href="#1483-flushcompositingbits">14.8.3 flushCompositingBits</a></h2>
+<p>每一个节点（RenderObject中）都有一个<code>_needsCompositing</code> 字段，该字段用于缓存当前节点在绘制子节点时是否需要合成 layer。flushCompositingBits 的功能就是在节点树初始化和子树中合成信息发生变化时来重新遍历节点树，更新每一个节点的<code>_needsCompositing</code> 值。可以发现：</p>
+<ol>
+<li>递归遍历子树的逻辑抽到了 flushCompositingBits 中，不需要组件单独实现。</li>
+<li>不需要每一次重绘都遍历子树了，只需要在初始化和发生变化时重新遍历。</li>
+</ol>
+<p>完美的解决了我们之前提出的问题，下面我们看一下具体实现：</p>
+<pre><code class="language-dart">void flushCompositingBits() {
+  // 对需要更新合成信息的节点按照节点在节点树中的深度排序
+  _nodesNeedingCompositingBitsUpdate.sort((a,b) =&gt; a.depth - b.depth);
+  for (final RenderObject node in _nodesNeedingCompositingBitsUpdate) {
+    if (node._needsCompositingBitsUpdate &amp;&amp; node.owner == this)
+      node._updateCompositingBits(); //更新合成信息
+  }
+  _nodesNeedingCompositingBitsUpdate.clear();
+}
+</code></pre>
+<p>RenderObject 的 <code>_updateCompositingBits</code> 方法的功能就是递归遍历子树确定如果每一个节点的<code>_needsCompositing</code> 值：</p>
+<pre><code class="language-dart">void _updateCompositingBits() {
+  if (!_needsCompositingBitsUpdate)
+    return;
+  final bool oldNeedsCompositing = _needsCompositing;
+  _needsCompositing = false;
+  // 递归遍历查找子树, 如果有孩子节点 needsCompositing 为true，则更新 _needsCompositing 值
+  visitChildren((RenderObject child) {
+    child._updateCompositingBits(); //递归执行
+    if (child.needsCompositing)
+      _needsCompositing = true;
+  });
+  // 这行我们上面讲过
+  if (isRepaintBoundary || alwaysNeedsCompositing)
+    _needsCompositing = true;
+  if (oldNeedsCompositing != _needsCompositing)
+    markNeedsPaint();
+  _needsCompositingBitsUpdate = false;
+}
+</code></pre>
+<p>执行完毕后，每一个节点的<code> _needsCompositing</code> 就确定了，我们在绘制时只需要判断一下当前的 <code>needsCompositing</code>（一个getter，会直接返回<code> _needsCompositing</code> ） 就能知道子树是否存在剥离layer了。这样的话，我们可以再优化一下 CustomRenderRotatedBox 的实现，最终的实现如下：</p>
+<pre><code class="language-dart">class CustomRenderRotatedBox extends RenderBox
+    with RenderObjectWithChildMixin&lt;RenderBox&gt; {
+  Matrix4? _paintTransform;
+
+  @override
+  void performLayout() {
+    _paintTransform = null;
+    if (child != null) {
+      child!.layout(constraints, parentUsesSize: true);
+      size = child!.size;
+      //根据子组件大小计算出旋转矩阵
+      _paintTransform = Matrix4.identity()
+        ..translate(size.width / 2.0, size.height / 2.0)
+        ..rotateZ(math.pi / 2)
+        ..translate(-child!.size.width / 2.0, -child!.size.height / 2.0);
+    } else {
+      size = constraints.smallest;
+    }
+  }
+
+  final LayerHandle&lt;TransformLayer&gt; _transformLayer =
+  LayerHandle&lt;TransformLayer&gt;();
+
+  void _paintChild(PaintingContext context, Offset offset) {
+    print("paint child");
+    context.paintChild(child!, offset);
+  }
+
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+     _transformLayer.layer = context.pushTransform(
+        needsCompositing, // pipelineOwner.flushCompositingBits(); 执行后这个值就能确定
+        offset,
+        _paintTransform!,
+        _paintChild,
+        oldLayer: _transformLayer.layer,
+      );
+    } else {
+      _transformLayer.layer = null;
+    }
+  }
+
+
+  @override
+  void dispose() {
+    _transformLayer.layer = null;
+    super.dispose();
+  }
+
+  @override
+  void applyPaintTransform(RenderBox child, Matrix4 transform) {
+    if (_paintTransform != null) transform.multiply(_paintTransform!);
+    super.applyPaintTransform(child, transform);
+  }
+
+}
+</code></pre>
+<p>是不是简洁清晰了很多！</p>
+<h3 id="再论-flushcompositingbits"><a class="header" href="#再论-flushcompositingbits">再论 flushCompositingBits</a></h3>
+<p>现在，我们思考一下引入 flushCompositingBits 的根本原因是什么？假如我们在变换类容器中始终采用合成 layer 的方式来对子树应用变换效果，也就是说不再使用 canvas 进行变换，这样的话 flushCompositingBits 也就没必要存在了，为什么一定要 flushCompositingBits 呢？根本原因就是：如果在变换类组件中一刀切的使用合成 layer 方式的话，每遇到一个变换类组件则至少会再创建一个 layer，这样的话，最终 layer 树上的layer数量就会变多。我们之前说过对子树应用的变换效果既能通过 Canvas 实现也能通过容器类Layer实现时，建议使用Canvas 。这是因为每新建一个 layer 都会有额外的开销，所以我们只应该在无法通过 Canvas 来实现子树变化效果时再通过Layer 合成的方式来实现。综上，我们可以发现<strong>引入 flushCompositingBits 的根本原因其实是为了减少 layer的数量</strong>。</p>
+<p>另外，flushCompositingBits 的执行过程只是做标记，并没有进行层的合成，真正的合成是在绘制时（组件的 paint 方法中）。</p>
+<h2 id="1484-总结"><a class="header" href="#1484-总结">14.8.4 总结</a></h2>
+<ol>
+<li>
+<p>只有组件树中有变换类容器时，才有可能需要重新合成 layer；如果没有变换类组件，则不需要。</p>
+</li>
+<li>
+<p>当变换类容器的后代节点会向 layer 树中添加新的绘制类 layer 时，则变换类组件中就需要合成 layer。</p>
+</li>
+<li>
+<p>引入 flushCompositingBits 的根本原因是为了减少 layer 的数量。</p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chapter14/layer.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chapter15/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chapter14/layer.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chapter15/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
