@@ -1,0 +1,8 @@
+[book]
+title = "flutter实战（第二版）"
+author = "杜文"
+multilingual = true
+src = "../src"
+[build]
+build-dir = "../html"
+create-missing = false

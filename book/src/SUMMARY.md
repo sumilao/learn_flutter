@@ -90,7 +90,7 @@
     * [9.6：动画切换组件（AnimatedSwitcher）](chapter9/animated_switcher.md) 
     * [9.7：动画过渡组件](chapter9/animated_widgets.md)  
     
-* [第十章：自定义组件](chapter10/intro.md)
+* [第十章：自定义组件](chapter10/index.md)
     * [10.1：自定义组件方法简介](chapter10/intro.md)
     * [10.2：组合现有组件](chapter10/combine.md)
     * [10.3：组合实例：TurnBox](chapter10/turn_box.md)
@@ -125,13 +125,13 @@
     * [14.3：Flutter启动流程和渲染管线](chapter14/flutter_app_startup.md)
     * [14.4：布局（Layout）过程](chapter14/layout.md)
     * [14.5：绘制（一）绘制原理及Layer](chapter14/paint.md)
-    * [14.6：绘制（二）组件树绘制流程](chapter14/paint.md)
+    * [14.6：绘制（二）组件树绘制流程](chapter14/paint_flow.md)
     * [14.7：绘制（三）Layer实例](chapter14/layer.md)
     * [14.8：绘制（四）Compositing](chapter14/compositing.md)
 
 ## 实例篇
 
-* [第十五章：一个完整的Flutter应用](chapter15/intro.md)
+* [第十五章：一个完整的Flutter应用](chapter15/index.md)
     * [15.1：应用简介](chapter15/intro.md)    
     * [15.2：APP代码结构](chapter15/code_structure.md) 
     * [15.3：Model类定义](chapter15/models.md) 
