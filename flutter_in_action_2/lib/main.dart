@@ -93,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const CupertinoTestRoute(),
                 withScaffold: false,
               ),
+              Page("状态管理", const StateManageDemo()),
             ]),
           ),
         ],
