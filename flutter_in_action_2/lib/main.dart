@@ -80,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: _generateItem(context, [
               Page("计数器", const CounterRoute(), withScaffold: false),
               Page("路由传值", const RouterTestRoute()),
+              Page("context", const ContextRoute()),
               Page("Stateless", const Echo(text: "hello world", backgroundColor: Colors.blue,)),
               Page("State生命周期", const StateLifecycleTest()),
               Page(
