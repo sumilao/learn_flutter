@@ -61,10 +61,7 @@ class _ParentWidgetState extends State<ParentWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TapboxB(
-        active: _active,
-        onChanged: _handleTapboxChanged,
-      ),
+      child: TapboxB(active: _active, onChanged: _handleTapboxChanged),
     );
   }
 }
@@ -72,8 +69,8 @@ class _ParentWidgetState extends State<ParentWidget> {
 //------------------------- TapboxB ----------------------------------
 
 class TapboxB extends StatelessWidget {
-  TapboxB({Key? key, this.active: false, required this.onChanged})
-      : super(key: key);
+  TapboxB({Key? key, this.active = false, required this.onChanged})
+    : super(key: key);
 
   final bool active;
   final ValueChanged<bool> onChanged;
@@ -121,10 +118,7 @@ class _ParentWidgetCState extends State<ParentWidgetC> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TapboxC(
-        active: _active,
-        onChanged: _handleTapboxChanged,
-      ),
+      child: TapboxC(active: _active, onChanged: _handleTapboxChanged),
     );
   }
 }
@@ -132,12 +126,12 @@ class _ParentWidgetCState extends State<ParentWidgetC> {
 //----------------------------- TapboxC ------------------------------
 
 class TapboxC extends StatefulWidget {
-  TapboxC({Key? key, this.active: false, required this.onChanged})
-      : super(key: key);
+  TapboxC({Key? key, this.active = false, required this.onChanged})
+    : super(key: key);
 
   final bool active;
   final ValueChanged<bool> onChanged;
-  
+
   @override
   _TapboxCState createState() => _TapboxCState();
 }
@@ -169,7 +163,7 @@ class _TapboxCState extends State<TapboxC> {
 
   @override
   Widget build(BuildContext context) {
-    // 在按下时添加绿色边框，当抬起时，取消高亮  
+    // 在按下时添加绿色边框，当抬起时，取消高亮
     return GestureDetector(
       onTapDown: _handleTapDown, // 处理按下事件
       onTapUp: _handleTapUp, // 处理抬起事件
@@ -186,18 +180,15 @@ class _TapboxCState extends State<TapboxC> {
         height: 200.0,
         decoration: BoxDecoration(
           color: widget.active ? Colors.lightGreen[700] : Colors.grey[600],
-          border: _highlight
-              ? Border.all(
-                  color: Colors.teal[700],
-                  width: 10.0,
-                )
-              : null,
+          border:
+              _highlight
+                  ? Border.all(color: Colors.teal[700]!, width: 10.0)
+                  : null,
         ),
       ),
     );
   }
 }
-
 
 class StateManageDemo extends StatelessWidget {
   const StateManageDemo({super.key});
@@ -206,15 +197,17 @@ class StateManageDemo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('状态管理示例')),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TapboxA(),
-            SizedBox(height: 20),
-            ParentWidget(),
-            SizedBox(height: 20),
-            ParentWidgetC(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TapboxA(),
+              SizedBox(height: 20),
+              ParentWidget(),
+              SizedBox(height: 20),
+              ParentWidgetC(),
+            ],
+          ),
         ),
       ),
     );

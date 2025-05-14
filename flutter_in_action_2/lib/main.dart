@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
             title: const Text("第一个Flutter应用"),
             children: _generateItem(context, [
               Page("计数器", const CounterRoute(), withScaffold: false),
-              Page("路由传值", const RouterTestRoute()),
               Page("context", const ContextRoute()),
               Page("Stateless", const Echo(text: "hello world", backgroundColor: Colors.blue,)),
               Page("State生命周期", const StateLifecycleTest()),
@@ -94,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 withScaffold: false,
               ),
               Page("状态管理", const StateManageDemo()),
+              Page("路由传值", const RouterTestRoute()),
             ]),
           ),
         ],
