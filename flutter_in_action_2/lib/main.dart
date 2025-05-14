@@ -80,7 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
             children: _generateItem(context, [
               Page("计数器", const CounterRoute(), withScaffold: false),
               Page("context", const ContextRoute()),
-              Page("Stateless", const Echo(text: "hello world", backgroundColor: Colors.blue,)),
+              Page(
+                "Stateless",
+                const Echo(text: "hello world", backgroundColor: Colors.blue),
+              ),
               Page("State生命周期", const StateLifecycleTest()),
               Page(
                 "子树中获取State对象",
@@ -94,6 +97,21 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Page("状态管理", const StateManageDemo()),
               Page("路由传值", const RouterTestRoute()),
+            ]),
+          ),
+          ExpansionTile(
+            title: const Text("基础组件"),
+            children: _generateItem(context, [
+              // PageInfo("Context测试",  ContextRoute(), withScaffold: false),
+              // PageInfo("Widget树中获取State对象",  RetrieveStateRoute(), withScaffold: false),
+              Page("文本、字体样式", const TextRoute()),
+              // Page("按钮", const ButtonRoute()),
+              // Page("图片伸缩", const ImageAndIconRoute()),
+              // Page("ICON fonts", const IconFontsRoute()),
+              // Page("单选开关和复选框", const SwitchAndCheckBoxRoute()),
+              // Page("输入框", const FocusTestRoute(), showLog: false),
+              // Page("Form", const FormTestRoute(), showLog: false),
+              // Page("进度条", const ProgressRoute()),
             ]),
           ),
         ],

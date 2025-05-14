@@ -1,51 +1,46 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+class TextRoute extends StatefulWidget {
+  const TextRoute({Key? key}) : super(key: key);
+
+  @override
+  _TextRouteState createState() => _TextRouteState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class _TextRouteState extends State<TextRoute> {
+  late GestureRecognizer _tapRecognizer;
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+  void initState() {
+    _tapRecognizer = TapGestureRecognizer();
+    super.initState();
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  void dispose() {
+    _tapRecognizer.dispose();
+    super.dispose();
+  }
 
-// 声明文本样式
-const textStyle = const TextStyle(fontFamily: 'Raleway');
-
-// 使用文本样式
-var buttonText = const Text("Use the font for this text", style: textStyle);
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          const Text("Hello world", textAlign: TextAlign.left),
+          const Text(
+            "Hello world",
+            textAlign: TextAlign.center,
+          ),
           Text(
             "Hello world! I'm Jack. " * 4,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const Text("Hello world", textScaler: TextScaler.linear(1.5)),
+          const Text(
+            "Hello world",
+            textScaleFactor: 1.5,
+          ),
           Text(
             "Hello world " * 6, //字符串重复六次
             textAlign: TextAlign.center,
@@ -53,30 +48,29 @@ class _MyHomePageState extends State<MyHomePage> {
           Text(
             "Hello world",
             style: TextStyle(
-              color: Colors.blue,
-              fontSize: 18.0,
-              height: 1.2,
-              fontFamily: "Courier",
-              background: Paint()..color = Colors.yellow,
-              decoration: TextDecoration.underline,
-              decorationStyle: TextDecorationStyle.dashed,
-            ),
+                color: Colors.blue,
+                fontSize: 18.0,
+                height: 1.2,
+                fontFamily: "Courier",
+                background: Paint()..color = Colors.yellow,
+                decoration: TextDecoration.underline,
+                decorationStyle: TextDecorationStyle.dashed),
           ),
           Text.rich(
-            TextSpan(
-              children: [
-                const TextSpan(text: "Home: "),
-                TextSpan(
+            TextSpan(children: [
+              const TextSpan(text: "Home: "),
+              TextSpan(
                   text: "https://flutterchina.club",
                   style: const TextStyle(color: Colors.blue),
-                ),
-                // recognizer: _tapRecognizer),
-              ],
-            ),
+                  recognizer: _tapRecognizer),
+            ]),
           ),
           DefaultTextStyle(
             //1.设置文本默认样式
-            style: const TextStyle(color: Colors.red, fontSize: 20.0),
+            style: const TextStyle(
+              color: Colors.red,
+              fontSize: 20.0,
+            ),
             textAlign: TextAlign.start,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,9 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          const Text("Use the font for this text", style: textStyle),
         ],
       ),
     );
   }
 }
+
