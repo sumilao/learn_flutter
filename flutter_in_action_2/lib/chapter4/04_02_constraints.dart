@@ -19,7 +19,7 @@ class SizeConstraintsRoute extends StatelessWidget {
               child: CircularProgressIndicator(
                 strokeWidth: 3,
                 value: .9,
-                valueColor: AlwaysStoppedAnimation(Colors.white70),
+                valueColor: AlwaysStoppedAnimation(Colors.green),
               ),
             ),
           )
